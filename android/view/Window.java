@@ -721,6 +721,7 @@ public abstract class Window {
      * @param wm The window manager for adding new windows.
      */
     public void setWindowManager(WindowManager wm, IBinder appToken, String appName) {
+        //默认关闭硬件加速,加速调用重载方法
         setWindowManager(wm, appToken, appName, false);
     }
 
@@ -737,9 +738,11 @@ public abstract class Window {
         mAppName = appName;
         mHardwareAccelerated = hardwareAccelerated
                 || SystemProperties.getBoolean(PROPERTY_HARDWARE_UI, false);
+        //如果传入的wm为null 则通过getSystemService获取WindowManager
         if (wm == null) {
             wm = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
         }
+        //将当前window和windowManger绑定起来
         mWindowManager = ((WindowManagerImpl)wm).createLocalWindowManager(this);
     }
 
