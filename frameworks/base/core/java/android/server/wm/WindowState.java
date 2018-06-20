@@ -110,6 +110,8 @@ import static com.android.server.wm.WindowManagerDebugConfig.DEBUG_RESIZE;
 import static com.android.server.wm.WindowManagerDebugConfig.DEBUG_VISIBILITY;
 import static com.android.server.wm.WindowManagerDebugConfig.TAG_WITH_CLASS_NAME;
 import static com.android.server.wm.WindowManagerDebugConfig.TAG_WM;
+import static frameworks.base.core.java.android.server.wm.WindowManagerDebugConfig.TAG_WITH_CLASS_NAME;
+import static frameworks.base.core.java.android.server.wm.WindowManagerDebugConfig.TAG_WM;
 
 class WindowList extends ArrayList<WindowState> {
     WindowList() {}

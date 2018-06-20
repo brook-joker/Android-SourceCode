@@ -55,19 +55,30 @@ import java.io.PrintWriter;
 import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 final class FragmentState implements Parcelable {
+    //类名，重新创建Fragment实例时候用到的
     final String mClassName;
+    //在Fragment列表里的位置
     final int mIndex;
+    //是否静态创建（inflated from layout）
     final boolean mFromLayout;
+    //Fragment的id，静态创建可以在<fragment>里设置，动态创建就是所在的容器的id
     final int mFragmentId;
+    //Fragment所在的容器的id
     final int mContainerId;
+    //标签
     final String mTag;
+    //是否在Activity重创建时候保留Fragment实例
     final boolean mRetainInstance;
+    //是否对该Fragment执行了Detach操作
     final boolean mDetached;
+    //setArguments参数
     final Bundle mArguments;
+    //hide or show
     final boolean mHidden;
-    
+
+    //保存Frament的状态
     Bundle mSavedFragmentState;
-    
+    //实例
     Fragment mInstance;
 
     public FragmentState(Fragment frag) {
