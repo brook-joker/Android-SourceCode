@@ -33,12 +33,13 @@ import android.view.ViewGroup;
 public interface Adapter {
     /**
      * Register an observer that is called when changes happen to the data used by this adapter.
-     *
+     * 注册一个观察者用来观察适配器中的数据变化时调用
      * @param observer the object that gets notified when the data set changes.
      */
     void registerDataSetObserver(DataSetObserver observer);
 
     /**
+     * 解除对之前注册的观察者
      * Unregister an observer that has previously been registered with this
      * adapter via {@link #registerDataSetObserver}.
      *
@@ -48,14 +49,14 @@ public interface Adapter {
 
     /**
      * How many items are in the data set represented by this Adapter.
-     * 
+     * 适配器中的数据集有多少个
      * @return Count of items.
      */
     int getCount();   
     
     /**
      * Get the data item associated with the specified position in the data set.
-     * 
+     * 根据position返回对应的item项
      * @param position Position of the item whose data we want within the adapter's 
      * data set.
      * @return The data at the specified position.
@@ -64,7 +65,7 @@ public interface Adapter {
     
     /**
      * Get the row id associated with the specified position in the list.
-     * 
+     * 据position返回对应的item id
      * @param position The position of the item within the adapter's data set whose row id we want.
      * @return The id of the item at the specified position.
      */
@@ -73,8 +74,9 @@ public interface Adapter {
     /**
      * Indicates whether the item ids are stable across changes to the
      * underlying data.
-     * 
+     * 表示item Id是否在对基础数据的更改中保持稳定。
      * @return True if the same id always refers to the same object.
+     * 如果相同的id始终引用同一个对象，则为True。
      */
     boolean hasStableIds();
     
@@ -132,7 +134,8 @@ public interface Adapter {
      * <p>
      * This method will only be called when the adapter is set on the {@link AdapterView}.
      * </p>
-     * 
+     *
+     * 返回适配器中包含多少种类型
      * @return The number of types of Views that will be created by this adapter
      */
     int getViewTypeCount();
@@ -144,6 +147,7 @@ public interface Adapter {
       * whether the empty view should be displayed.  A typical implementation will return
       * getCount() == 0 but since getCount() includes the headers and footers, specialized
       * adapters might want a different behavior.
+      * 这个方法用来表示适配器不包含任何数据
       */
      boolean isEmpty();
 }

@@ -335,14 +335,21 @@ public final class Bitmap implements Parcelable {
      * further uses for the bitmap. This is an advanced call, and normally need
      * not be called, since the normal GC process will free up this memory when
      * there are no more references to this bitmap.
+     * 释放与Bitmap关联的本地对象，并清楚对像素数据的引用。这不会同步释放像素数据;如果没有其他引用，
+     * 它只是允许被垃圾收集. Bitmap被标记为"dead",这意味着如果调用getPixels() or setPixels()
+     * 将会抛出异常，不会绘制任何东西。操作无法取消，因此只有确定Bitmap之后不会在有任何使用的时候才应该调用
+     * 此操作。这是一个高级调用,通常不用调用，因为正常的GC进程将在没有对Bitmap的引用时释放内存
      */
     public void recycle() {
         if (!mRecycled && mNativePtr != 0) {
             if (nativeRecycle(mNativePtr)) {
+                // 返回本地像素对象是否真的被回收
                 // return value indicates whether native pixel object was actually recycled.
+                // false表示这个对象仍在被本地使用,现在不应该收集这些对象,稍后在收集Bitmap的时候去收集
                 // false indicates that it is still in use at the native level and these
                 // objects should not be collected now. They will be collected later when the
                 // Bitmap itself is collected.
+                //
                 mBuffer = null;
                 mNinePatchChunk = null;
             }

@@ -23,6 +23,7 @@ package android.database;
  */
 public abstract class DataSetObserver {
     /**
+     * 当整个数据源发生变化时回调此方法
      * This method is called when the entire data set has changed,
      * most likely through a call to {@link Cursor#requery()} on a {@link Cursor}.
      */
@@ -31,6 +32,7 @@ public abstract class DataSetObserver {
     }
 
     /**
+     * 当整个数据源失效时回调此方法
      * This method is called when the entire data becomes invalid,
      * most likely through a call to {@link Cursor#deactivate()} or {@link Cursor#close()} on a
      * {@link Cursor}.

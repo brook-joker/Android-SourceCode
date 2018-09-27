@@ -114,10 +114,13 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         WIDGET_PACKAGE_NAME = pkg != null ? pkg.getName() : null;
     }
 
+    //拦截事件
     private static final int TYPE_ON_INTERCEPT = 0;
+    //触控事件
     private static final int TYPE_ON_TOUCH = 1;
 
     static {
+        //这里是判断系统版本5.0以后就会对比view的Z轴距离
         if (Build.VERSION.SDK_INT >= 21) {
             TOP_SORTED_CHILDREN_COMPARATOR = new ViewElevationComparator();
         } else {
@@ -133,9 +136,11 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     static final ThreadLocal<Map<String, Constructor<Behavior>>> sConstructors =
             new ThreadLocal<>();
 
-
+    //预绘制
     static final int EVENT_PRE_DRAW = 0;
+    //嵌套滚动
     static final int EVENT_NESTED_SCROLL = 1;
+    //View被移除
     static final int EVENT_VIEW_REMOVED = 2;
 
     /** @hide */
@@ -1838,6 +1843,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
     /**
      * Sorts child views with higher Z values to the beginning of a collection.
+     * 比较是视图的Z轴距离
      */
     static class ViewElevationComparator implements Comparator<View> {
         @Override

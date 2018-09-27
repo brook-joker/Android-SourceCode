@@ -6558,6 +6558,7 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
         private RecyclerListener mRecyclerListener;
 
         /**
+         * 第一个被存在mActivieViews中view的position
          * The position of the first view stored in mActiveViews.
          */
         private int mFirstActivePosition;
@@ -6567,6 +6568,8 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
          * layout, and at the end of layout all view in mActiveViews are moved to mScrapViews.
          * Views in mActiveViews represent a contiguous range of Views, with position of the first
          * view store in mFirstActivePosition.
+         * 主要用来存储布局过程中的view，布局结束后所有的view都会从这个数组移至mScrapViews
+         * mActiveViews中的View表示连续的视图范围，第一个视图存储的位置在mFirstActivePosition中。
          */
         private View[] mActiveViews = new View[0];
 

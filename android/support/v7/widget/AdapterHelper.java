@@ -755,9 +755,11 @@ class AdapterHelper implements OpReorderer.Callback {
 
     /**
      * Contract between AdapterHelper and RecyclerView.
+     * 适配器与RecyclerView通过以下接口进行关联
      */
     static interface Callback {
 
+        //根据Position去寻找对应的ViewHolder
         ViewHolder findViewHolder(int position);
 
         void offsetPositionsForRemovingInvisible(int positionStart, int itemCount);

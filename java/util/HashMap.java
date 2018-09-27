@@ -142,48 +142,67 @@ public class HashMap<K,V> extends AbstractMap<K,V>
     /*
      * Implementation notes.
      *
-     * This map usually acts as a binned (bucketed) hash table, but
-     * when bins get too large, they are transformed into bins of
-     * TreeNodes, each structured similarly to those in
-     * java.util.TreeMap. Most methods try to use normal bins, but
-     * relay to TreeNode methods when applicable (simply by checking
-     * instanceof a node).  Bins of TreeNodes may be traversed and
-     * used like any others, but additionally support faster lookup
-     * when overpopulated. However, since the vast majority of bins in
-     * normal use are not overpopulated, checking for existence of
-     * tree bins may be delayed in the course of table methods.
+     * HashMap通常用作分箱（分区）哈希表
+     * This map usually acts as a binned (bucketed) hash table,
+     * 但是当分箱变得太大时，它们会转换成TreeNodes的分区
+     * but when bins get too large, they are transformed into bins of TreeNodes,
+     * 每个分区的数据结构与TreeMap数据结构类似
+     * each structured similarly to those in java.util.TreeMap.
+     * 大多数方法尝试使用普通的容器
+     * Most methods try to use normal bins,
+     * 但是在使用TreeNode的方法时（只需检查节点的实例）
+     * but relay to TreeNode methods when applicable (simply by checking
+     * instanceof a node).
+     * TreeNodes的容器可以正常的遍历和使用
+     * Bins of TreeNodes may be traversed and used like any others,
+     * 但是当容器过多还支持更快的查找
+     * but additionally support faster lookup when overpopulated.
+     * 然而,由于绝大多数正常使用容器都不存在容器过多的情况
+     * However, since the vast majority of bins in normal use are not overpopulated,
+     * 检查树容器的存在可以以表格方式的过程延迟
+     * checking for existence of tree bins may be delayed in the course of table methods.
      *
-     * Tree bins (i.e., bins whose elements are all TreeNodes) are
-     * ordered primarily by hashCode, but in the case of ties, if two
-     * elements are of the same "class C implements Comparable<C>",
-     * type then their compareTo method is used for ordering. (We
-     * conservatively check generic types via reflection to validate
-     * this -- see method comparableClassFor).  The added complexity
-     * of tree bins is worthwhile in providing worst-case O(log n)
-     * operations when keys either have distinct hashes or are
-     * orderable, Thus, performance degrades gracefully under
-     * accidental or malicious usages in which hashCode() methods
-     * return values that are poorly distributed, as well as those in
-     * which many keys share a hashCode, so long as they are also
-     * Comparable. (If neither of these apply, we may waste about a
+     * 树容器（例如:其元素都是TreeNodes的容器）主要由hashCode排序
+     * Tree bins (i.e., bins whose elements are all TreeNodes) are ordered primarily by hashCode,
+     * 但是在枢纽的关系下，如果两个元素具有相同的比较器,则使用其compareTo方法进行排序
+     * but in the case of ties, if two elements are of the same "class C implements Comparable<C>",
+     * type then their compareTo method is used for ordering.
+     * （我们保守地通过反射检查泛型以验证这一观点 -  请参考comparableClassFor方法）
+     * (We conservatively check generic types via reflection to validate this -- see method comparableClassFor).
+     * 当key具有不同的哈希值或者订购时,增加树容器的复杂度对于提供最坏情况的O(log n)操作是值得的
+     * The added complexity of tree bins is worthwhile in providing worst-case O(log n)
+     * operations when keys either have distinct hashes or are orderable,
+     * 因此,在偶然或者恶意用法情况下,hashCode方法会返回分布不均的值，以及在许多key共享hashCode,只要它们是可比较的,性能都会优雅地降级
+     * Thus, performance degrades gracefully under accidental or malicious usages in which hashCode() methods
+     * return values that are poorly distributed,as well as those in which many keys share a hashCode,
+     * so long as they are also Comparable.
+     * 如果这些都不适用，与不采取热河预防措施相比，我们可能在时间和空间上浪费了大约2倍。
+     * 但是，唯一已知的情况源于糟糕的用户编程实践，这些实践已经非常缓慢，这几乎没有区别
+     *  (If neither of these apply, we may waste about a
      * factor of two in time and space compared to taking no
      * precautions. But the only known cases stem from poor user
      * programming practices that are already so slow that this makes
      * little difference.)
      *
-     * Because TreeNodes are about twice the size of regular nodes, we
-     * use them only when bins contain enough nodes to warrant use
-     * (see TREEIFY_THRESHOLD). And when they become too small (due to
-     * removal or resizing) they are converted back to plain bins.  In
-     * usages with well-distributed user hashCodes, tree bins are
-     * rarely used.  Ideally, under random hashCodes, the frequency of
-     * nodes in bins follows a Poisson distribution
-     * (http://en.wikipedia.org/wiki/Poisson_distribution) with a
-     * parameter of about 0.5 on average for the default resizing
-     * threshold of 0.75, although with a large variance because of
-     * resizing granularity. Ignoring variance, the expected
-     * occurrences of list size k are (exp(-0.5) * pow(0.5, k) /
-     * factorial(k)). The first values are:
+     *
+     * 由于TreeNode的节点约为常规节点的两倍，
+     * Because TreeNodes are about twice the size of regular nodes,
+     * 因此只有当容器包含足够的节点以保证使用时我们才使用它们（参考TREEIFY_THRESHOLD)）
+     * we use them only when bins contain enough nodes to warrant use (see TREEIFY_THRESHOLD).
+     * 当它们变得太小（由于移除或者调整大小）时，它们会转回普通容器
+     * And when they become too small (due to removal or resizing) they are converted back to plain bins.
+     * 在具有良好分布的用户hashCodes的用法中，很少使用树容器。
+     * In usages with well-distributed user hashCodes, tree bins are rarely used.
+     * 理想情况下，在随机hashCodes下，容器中节点的频率遵循泊松分布
+     * Ideally, under random hashCodes, the frequency of nodes in bins follows a Poisson distribution
+     * (http://en.wikipedia.org/wiki/Poisson_distribution)
+     * 参数平均值为0.5,默认调整阀值为0.75,
+     * with a parameter of about 0.5 on average for the default resizing threshold of 0.75,
+     * 虽然调整粒度会造成很大的差异
+     * although with a large variance because of resizing granularity.
+     * 但是可以忽略差异（size>8）,列表大小K值的预期变化是(exp(-0.5) * pow(0.5, k) / factorial(k))
+     * Ignoring variance, the expected occurrences of list size k are (exp(-0.5) * pow(0.5, k) / factorial(k)).
+     * The first values are:
      *
      * 0:    0.60653066
      * 1:    0.30326533
@@ -194,13 +213,20 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * 6:    0.00001316
      * 7:    0.00000094
      * 8:    0.00000006
-     * more: less than 1 in ten million
+     * more: less than 1 in ten million(不到千万分之一)
+     * 树容器的根通常是它的第一个节点。
+     * The root of a tree bin is normally its first node.
+     * 但是，有时（目前仅在Iterator.remove上），根可能在其他地方，
+     * However,sometimes (currently only upon Iterator.remove), the root might be elsewhere,
+     * 但可以在父链接之后恢复（方法  TreeNode.root()）
+     * but can be recovered following parent links (method TreeNode.root()).
      *
-     * The root of a tree bin is normally its first node.  However,
-     * sometimes (currently only upon Iterator.remove), the root might
-     * be elsewhere, but can be recovered following parent links
-     * (method TreeNode.root()).
      *
+     *
+     * 所有适用的内部方法都接受哈希码作为参数（通常从公共方法提供），
+     * 允许它们相互调用而无需重新计算用户hashCodes。
+     * 大多数内部方法也接受“tab”参数，通常是当前表，
+     * 但在调整大小或转换时可能是新的或旧的。
      * All applicable internal methods accept a hash code as an
      * argument (as normally supplied from a public method), allowing
      * them to call each other without recomputing user hashCodes.
@@ -208,23 +234,22 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * normally the current table, but may be a new or old one when
      * resizing or converting.
      *
-     * When bin lists are treeified, split, or untreeified, we keep
-     * them in the same relative access/traversal order (i.e., field
-     * Node.next) to better preserve locality, and to slightly
-     * simplify handling of splits and traversals that invoke
-     * iterator.remove. When using comparators on insertion, to keep a
-     * total ordering (or as close as is required here) across
-     * rebalancings, we compare classes and identityHashCodes as
-     * tie-breakers.
      *
-     * The use and transitions among plain vs tree modes is
-     * complicated by the existence of subclass LinkedHashMap. See
-     * below for hook methods defined to be invoked upon insertion,
-     * removal and access that allow LinkedHashMap internals to
-     * otherwise remain independent of these mechanics. (This also
-     * requires that a map instance be passed to some utility methods
-     * that may create new nodes.)
+     * 当容器被树化,拆分或未解析时，我们将它们保持在相同的相对访问/遍历顺序（即字段Node.next）中以更好地保留局部性，并略微简化对调用iterator.remove的拆分和遍历的处理
+     * When bin lists are treeified, split, or untreeified, we keep them in the same relative access/traversal order (i.e., field
+     * Node.next) to better preserve locality, and to slightly simplify handling of splits and traversals that invoke iterator.remove.
+     * 在插入时使用比较器时，为了保持整个重新排序的总排序（或者尽可能接近），我们将类和identityHashCodes作为绑定器进行比较。
+     * When using comparators on insertion, to keep a total ordering (or as close as is required here) across
+     * rebalancings, we compare classes and identityHashCodes as tie-breakers.
      *
+     * 普通vs树模式之间的使用和转换由于子类LinkedHashMap的存在而变得复杂
+     * The use and transitions among plain vs tree modes is complicated by the existence of subclass LinkedHashMap.
+     * 请参阅下面的钩子方法，这些钩子方法定义为在插入，删除和访问时调用，允许LinkedHashMap内部以其他方式保持独立于这些机制。
+     * See below for hook methods defined to be invoked upon insertion,removal and access that allow LinkedHashMap internals to otherwise remain independent of these mechanics.
+     * （这也要求将map实例传递给可能创建新节点的一些实用程序方法。）
+     *  (This also requires that a map instance be passed to some utility methods that may create new nodes.)
+     *
+     * 类似于并发编程的基于SSA的编码风格有助于避免在所有扭曲指针操作中出现混叠错误。
      * The concurrent-programming-like SSA-based coding style helps
      * avoid aliasing errors amid all of the twisty pointer operations.
      */
@@ -250,16 +275,20 @@ public class HashMap<K,V> extends AbstractMap<K,V>
     static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
     /**
-     * The bin count threshold for using a tree rather than list for a
-     * bin.  Bins are converted to trees when adding an element to a
-     * bin with at least this many nodes. The value must be greater
-     * than 2 and should be at least 8 to mesh with assumptions in
-     * tree removal about conversion back to plain bins upon
-     * shrinkage.
+     * 这个容器计数阀值用于使用树容器而不是普通容器
+     * The bin count threshold for using a tree rather than list for a bin.
+     * 将元素添加到具有至少这么多节点的容器时转换成树容器
+     * Bins are converted to trees when adding an element to a bin with at least this many nodes.
+     * 该值必须大于2并且应该至少为8,当树容器中进行移除时操作，以便在收缩时转换回普通容器
+     * The value must be greater than 2 and should be at least 8
+     * to mesh with assumptions in tree removal about conversion back to plain bins upon shrinkage.
      */
     static final int TREEIFY_THRESHOLD = 8;
 
     /**
+     *
+     * 用于在调整大小操作期间解除（拆分）的容器计数阈值。
+     * 应该小于TREEIFY_THRESHOLD，并且最多6个与去除下的收缩检测网格。
      * The bin count threshold for untreeifying a (split) bin during a
      * resize operation. Should be less than TREEIFY_THRESHOLD, and at
      * most 6 to mesh with shrinkage detection under removal.
@@ -267,21 +296,29 @@ public class HashMap<K,V> extends AbstractMap<K,V>
     static final int UNTREEIFY_THRESHOLD = 6;
 
     /**
+     * 容器可以树化的最小表容量
      * The smallest table capacity for which bins may be treeified.
+     * （否则，如果容器中的节点太多，则会调整表的大小）
      * (Otherwise the table is resized if too many nodes in a bin.)
+     * 应该至少为4 * TREEIFY_THRESHOLD，以避免调整大小和树化阀值之间的冲突
      * Should be at least 4 * TREEIFY_THRESHOLD to avoid conflicts
      * between resizing and treeification thresholds.
      */
     static final int MIN_TREEIFY_CAPACITY = 64;
 
     /**
+     * 基本的hash容器节点 用于链表的情况
      * Basic hash bin node, used for most entries.  (See below for
      * TreeNode subclass, and in LinkedHashMap for its Entry subclass.)
      */
     static class Node<K,V> implements Map.Entry<K,V> {
+        //hash值
         final int hash;
+        //key
         final K key;
+        //value
         V value;
+        //下一个节点
         Node<K,V> next;
 
         Node(int hash, K key, V value, Node<K,V> next) {
@@ -623,7 +660,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * @param hash hash for key
      * @param key the key
      * @param value the value to put
-     * @param onlyIfAbsent if true, don't change existing value
+     * @param onlyIfAbsent if true, don't change existing value  如果为true,那么只有在不存在该key时才会进行put操作
      * @param evict if false, the table is in creation mode.
      * @return previous value, or null if none
      */
@@ -632,32 +669,46 @@ public class HashMap<K,V> extends AbstractMap<K,V>
         Node<K,V>[] tab;
         Node<K,V> p;
         int n, i;
+        // 第一次 put 值的时候，会触发下面的 resize()，类似 java7 的第一次 put 也要初始化数组长度
+        // 第一次 resize 和后续的扩容有些不一样，因为这次是数组从 null 初始化到默认的 16 或自定义的初始容量
         if ((tab = table) == null || (n = tab.length) == 0)
             //如果table还没有初始化的话 调用resize进行初始化
             n = (tab = resize()).length;
+        //找到具体的数组下标，如果此位置没有指，那么直接初始化一下Node并放置在这个位置就可以了
         if ((p = tab[i = (n - 1) & hash]) == null)
             tab[i] = newNode(hash, key, value, null);
         else {
+            //如果该位置有值的话
             Node<K,V> e; K k;
+            //首先,判断该位置的第一个数据和我们要插入的数据key是不是"相等"，如果是，取出这个节点
             if (p.hash == hash &&
                 ((k = p.key) == key || (key != null && key.equals(k))))
                 e = p;
             else if (p instanceof TreeNode)
+                //如果该节点是代表红黑树的节点,调用红黑树的插值方法
                 e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
             else {
+                //走到这里说明数组该位置上是一个链表
                 for (int binCount = 0; ; ++binCount) {
+                    
+                    //找到对应位置
                     if ((e = p.next) == null) {
+                        //使用尾插法（JAVA7使用的是头插法）插入到链表的后面
                         p.next = newNode(hash, key, value, null);
                         if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                            //如果新插入的节点是第9个节点的 触发树化 将链表转成红黑树
                             treeifyBin(tab, hash);
                         break;
                     }
-                    if (e.hash == hash &&
-                        ((k = e.key) == key || (key != null && key.equals(k))))
+                    // 如果在该链表中找到了"相等"的 key(== 或 equals)
+                    if (e.hash == hash &&((k = e.key) == key || (key != null && key.equals(k))))
+                        // 此时 break，那么 e 为链表中[与要插入的新值的 key "相等"]的 node
                         break;
                     p = e;
                 }
             }
+             // e!=null 说明存在旧值的key与要插入的key"相等"
+             // 对于我们分析的put操作，下面这个 if 其实就是进行 "值覆盖"，然后返回旧值
             if (e != null) { // existing mapping for key
                 V oldValue = e.value;
                 if (!onlyIfAbsent || oldValue == null)
@@ -667,6 +718,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
             }
         }
         ++modCount;
+        // 如果 HashMap 由于新插入这个值导致 size 已经超过了阈值，需要进行扩容
         if (++size > threshold)
             resize();
         afterNodeInsertion(evict);
@@ -684,40 +736,59 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      */
     final Node<K,V>[] resize() {
         Node<K,V>[] oldTab = table;
+        //旧容量
         int oldCap = (oldTab == null) ? 0 : oldTab.length;
+        //旧阈值
         int oldThr = threshold;
+        //新容量 新阈值
         int newCap, newThr = 0;
-        if (oldCap > 0) {
+        if (oldCap > 0) { //对应数组扩容
+            //如果容量已经超出最大容量 则限制为最大容量
             if (oldCap >= MAXIMUM_CAPACITY) {
                 threshold = Integer.MAX_VALUE;
                 return oldTab;
             }
+            //将数组大小扩大一倍
             else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
                      oldCap >= DEFAULT_INITIAL_CAPACITY)
+                //阈值也扩大一倍
                 newThr = oldThr << 1; // double threshold
         }
+        //如果旧阀值存在
         else if (oldThr > 0) // initial capacity was placed in threshold
+            // 对应使用 new HashMap(int initialCapacity) 初始化后，第一次 put 的时候
             newCap = oldThr;
         else {               // zero initial threshold signifies using defaults
+            // 对应使用 new HashMap() 初始化后，第一次 put 的时候
+            //新容量
             newCap = DEFAULT_INITIAL_CAPACITY;
+            //新阈值
             newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
         }
+        //更新阈值
         if (newThr == 0) {
             float ft = (float)newCap * loadFactor;
             newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
                       (int)ft : Integer.MAX_VALUE);
         }
         threshold = newThr;
+
+        // 用新的数组大小初始化新的数组
         @SuppressWarnings({"rawtypes","unchecked"})
             Node<K,V>[] newTab = (Node<K,V>[])new Node[newCap];
-        table = newTab;
+        table = newTab;// 如果是初始化数组，到这里就结束了，返回 newTab 即可
+
         if (oldTab != null) {
+            // 开始遍历原数组，进行数据迁移。
             for (int j = 0; j < oldCap; ++j) {
                 Node<K,V> e;
                 if ((e = oldTab[j]) != null) {
+                    //将旧节点的值置空
                     oldTab[j] = null;
+                    // 如果该数组位置上只有单个元素，那就简单了，简单迁移这个元素就可以了
                     if (e.next == null)
                         newTab[e.hash & (newCap - 1)] = e;
+
                     else if (e instanceof TreeNode)
                         ((TreeNode<K,V>)e).split(this, newTab, j, oldCap);
                     else { // preserve order
