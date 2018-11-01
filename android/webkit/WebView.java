@@ -1074,6 +1074,7 @@ public class WebView extends AbsoluteLayout
 
     /**
      * Reloads the current URL.
+     * 重新加载URL
      */
     public void reload() {
         checkThread();
@@ -1082,7 +1083,7 @@ public class WebView extends AbsoluteLayout
 
     /**
      * Gets whether this WebView has a back history item.
-     *
+     * 判断 WebView 当前是否可以返回上一页
      * @return true iff this WebView has a back history item
      */
     public boolean canGoBack() {
@@ -1816,6 +1817,8 @@ public class WebView extends AbsoluteLayout
     }
 
     /**
+     *
+     *
      * Injects the supplied Java object into this WebView. The object is
      * injected into the JavaScript context of the main frame, using the
      * supplied name. This allows the Java object's methods to be

@@ -68,6 +68,7 @@ public class WebViewClient {
      * @param request Object containing the details of the request.
      * @return True if the host application wants to leave the current WebView
      *         and handle the url itself, otherwise return false.
+     * 是否在 WebView 内加载页面。
      */
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
         return shouldOverrideUrlLoading(view, request.getUrl().toString());
@@ -81,7 +82,7 @@ public class WebViewClient {
      * embedded frame changes, i.e. clicking a link whose target is an iframe,
      * it will also not be called for fragment navigations (navigations to
      * #fragment_id).
-     *
+     * WebView 开始加载页面时回调，一次Frame加载对应一次回调。
      * @param view The WebView that is initiating the callback.
      * @param url The url to be loaded.
      * @param favicon The favicon for this page if it already exists in the
@@ -95,7 +96,7 @@ public class WebViewClient {
      * is called only for main frame. When onPageFinished() is called, the
      * rendering picture may not be updated yet. To get the notification for the
      * new Picture, use {@link WebView.PictureListener#onNewPicture}.
-     *
+     * WebView 完成加载页面时回调，一次Frame加载对应一次回调。
      * @param view The WebView that is initiating the callback.
      * @param url The url of the page.
      */
@@ -105,7 +106,7 @@ public class WebViewClient {
     /**
      * Notify the host application that the WebView will load the resource
      * specified by the given url.
-     *
+     * WebView 加载页面资源时会回调，每一个资源产生的一次网络加载，除非本地有当前 url 对应有缓存，否则就会加载。
      * @param view The WebView that is initiating the callback.
      * @param url The url of the resource the WebView will load.
      */
@@ -158,6 +159,7 @@ public class WebViewClient {
      *         resource itself.
      * @deprecated Use {@link #shouldInterceptRequest(WebView, WebResourceRequest)
      *             shouldInterceptRequest(WebView, WebResourceRequest)} instead.
+     * WebView 可以拦截某一次的 request 来返回我们自己加载的数据，这个方法在后面缓存会有很大作用
      */
     @Deprecated
     public WebResourceResponse shouldInterceptRequest(WebView view,
@@ -179,6 +181,7 @@ public class WebViewClient {
      * @return A {@link android.webkit.WebResourceResponse} containing the
      *         response information or null if the WebView should load the
      *         resource itself.
+     * WebView 可以拦截某一次的 request 来返回我们自己加载的数据，这个方法在后面缓存会有很大作用
      */
     public WebResourceResponse shouldInterceptRequest(WebView view,
             WebResourceRequest request) {
@@ -259,6 +262,7 @@ public class WebViewClient {
      * @param view The WebView that is initiating the callback.
      * @param request The originating request.
      * @param error Information about the error occured.
+     * WebView 访问 url 出错。
      */
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
         if (request.isForMainFrame()) {
@@ -269,8 +273,11 @@ public class WebViewClient {
     }
 
     /**
+     * 通知主机应用程序在加载资源时已从服务器收到HTTP错误。 HTTP错误的状态代码 >= 400.
+     * 将针对任何资源（iframe，图像等）调用此回调，而不仅仅针对主页面。 因此，建议在此回调中执行最少的必要工作。
+     * 请注意服务器的内容
      * Notify the host application that an HTTP error has been received from the server while
-     * loading a resource.  HTTP errors have status codes &gt;= 400.  This callback will be called
+     * loading a resource.  HTTP errors have status codes >= 400.  This callback will be called
      * for any resource (iframe, image, etc), not just for the main page. Thus, it is recommended to
      * perform minimum required work in this callback. Note that the content of the server
      * response may not be provided within the <b>errorResponse</b> parameter.
@@ -318,6 +325,7 @@ public class WebViewClient {
      * @param handler An SslErrorHandler object that will handle the user's
      *            response.
      * @param error The SSL error object.
+     * WebView ssl 访问证书出错，handler.cancel()取消加载，handler.proceed()对然错误也继续加载。
      */
     public void onReceivedSslError(WebView view, SslErrorHandler handler,
             SslError error) {

@@ -125,6 +125,7 @@ public abstract class WebSettings {
     public @interface CacheMode {}
 
     /**
+     * （默认）根据cache-control决定是否从网络上取数据。
      * Default cache usage mode. If the navigation type doesn't impose any
      * specific behavior, use cached resources when they are available
      * and not expired, otherwise load resources from the network.
@@ -143,6 +144,7 @@ public abstract class WebSettings {
     public static final int LOAD_NORMAL = 0;
 
     /**
+     * 只要本地有，无论是否过期，或者no-cache，都使用缓存中的数据。
      * Use cached resources when they are available, even if they have expired.
      * Otherwise load resources from the network.
      * Use with {@link #setCacheMode}.
@@ -150,12 +152,14 @@ public abstract class WebSettings {
     public static final int LOAD_CACHE_ELSE_NETWORK = 1;
 
     /**
+     * 不使用缓存，只从网络获取数据.
      * Don't use the cache, load from the network.
      * Use with {@link #setCacheMode}.
      */
     public static final int LOAD_NO_CACHE = 2;
 
     /**
+     * 不使用网络，只读取本地缓存数据
      * Don't use the network, load from the cache.
      * Use with {@link #setCacheMode}.
      */
@@ -245,6 +249,7 @@ public abstract class WebSettings {
      * {@link WebView#zoomOut()} methods. The default is true.
      *
      * @param support whether the WebView should support zoom
+     * 是否支持缩放
      */
     public abstract void setSupportZoom(boolean support);
 
@@ -321,6 +326,7 @@ public abstract class WebSettings {
      * default.  Note that this enables or disables file system access only.
      * Assets and resources are still accessible using file:///android_asset and
      * file:///android_res.
+     * 是否允许加载本地 html 文件/false
      */
     public abstract void setAllowFileAccess(boolean allow);
 
@@ -441,7 +447,7 @@ public abstract class WebSettings {
 
     /**
      * Sets the text zoom of the page in percent. The default is 100.
-     *
+     * 以百分比设置页面的文本缩放。 默认值为100。
      * @param textZoom the text zoom in percent
      */
     public abstract void setTextZoom(int textZoom);
@@ -828,7 +834,7 @@ public abstract class WebSettings {
      * setting is changed from false to true, all images resources referenced
      * by content currently displayed by the WebView are loaded automatically.
      * The default is true.
-     *
+     * 支持自动加载图片
      * @param flag whether the WebView should load image resources
      */
     public abstract void setLoadsImagesAutomatically(boolean flag);
@@ -836,7 +842,7 @@ public abstract class WebSettings {
     /**
      * Gets whether the WebView loads image resources. This includes
      * images embedded using the data URI scheme.
-     *
+     * 是否支持自动加载图片
      * @return true if the WebView loads image resources
      * @see #setLoadsImagesAutomatically
      */
@@ -897,6 +903,8 @@ public abstract class WebSettings {
     /**
      * Tells the WebView to enable JavaScript execution.
      * <b>The default is false.</b>
+     *  WebView默认是不支持JavaScript 、IFrame或者是任何的框架语法的。通过设webview.getSettings().setJavaScriptEnabled(true); 
+     * 就可以打开JavaScript.webView.requestFocus()如果不设置的话，会出现不能弹出软键盘等问题。
      *
      * @param flag true if the WebView should execute JavaScript
      */
@@ -918,7 +926,8 @@ public abstract class WebSettings {
      * {@link android.os.Build.VERSION_CODES#ICE_CREAM_SANDWICH_MR1} and below,
      * and false for API level {@link android.os.Build.VERSION_CODES#JELLY_BEAN}
      * and above.
-     *
+     * 允许通过 file url 加载的 Javascript 可以访问其他的源，包括其他的文件和 http，https 等其他的源，Android 4.1 之前默认是true，
+     * 在 Android 4.1 及以后默认是false,也就是禁止如果此设置是允许，则 setAllowFileAccessFromFileURLs 不起做用。
      * @param flag whether JavaScript running in the context of a file scheme
      *             URL should be allowed to access content from any origin
      */
@@ -940,7 +949,7 @@ public abstract class WebSettings {
      * {@link android.os.Build.VERSION_CODES#ICE_CREAM_SANDWICH_MR1} and below,
      * and false for API level {@link android.os.Build.VERSION_CODES#JELLY_BEAN}
      * and above.
-     *
+     * 允许通过 file url 加载的 Javascript 读取其他的本地文件,Android 4.1 之前默认是true，在 Android 4.1 及以后默认是false,也就是禁止
      * @param flag whether JavaScript running in the context of a file scheme
      *             URL should be allowed to access content from other file
      *             scheme URLs
@@ -1018,7 +1027,7 @@ public abstract class WebSettings {
      * is false. Note that in order for the Application Caches API to be
      * enabled, a valid database path must also be supplied to
      * {@link #setAppCachePath}.
-     *
+     * 是否启用缓存模式
      * @param flag true if the WebView should enable Application Caches
      */
     public abstract void setAppCacheEnabled(boolean flag);
@@ -1032,6 +1041,7 @@ public abstract class WebSettings {
      * @param appCachePath a String path to the directory containing
      *                     Application Caches files.
      * @see #setAppCacheEnabled
+     * Android 私有缓存存储，如果你不调用setAppCachePath方法，WebView将不会产生这个目录。
      */
     public abstract void setAppCachePath(String appCachePath);
 
@@ -1058,14 +1068,14 @@ public abstract class WebSettings {
      * Note you should only modify this setting prior to making <b>any</b> WebView
      * page load within a given process, as the WebView implementation may ignore
      * changes to this setting after that point.
-     *
+     * 是否开启数据库缓存
      * @param flag true if the WebView should use the database storage API
      */
     public abstract void setDatabaseEnabled(boolean flag);
 
     /**
      * Sets whether the DOM storage API is enabled. The default value is false.
-     *
+     * 是否开启DOM缓存
      * @param flag true if the WebView should use the DOM storage API
      */
     public abstract void setDomStorageEnabled(boolean flag);
@@ -1218,7 +1228,7 @@ public abstract class WebSettings {
     /**
      * Sets the WebView's user-agent string. If the string is null or empty,
      * the system default value will be used.
-     *
+     * 设置 UserAgent 属性
      * Note that starting from {@link android.os.Build.VERSION_CODES#KITKAT} Android
      * version, changing the user-agent while loading a web page causes WebView
      * to initiate loading once again.
@@ -1277,6 +1287,7 @@ public abstract class WebSettings {
      * {@link #LOAD_CACHE_ELSE_NETWORK}, {@link #LOAD_NO_CACHE} or
      * {@link #LOAD_CACHE_ONLY}. The default value is {@link #LOAD_DEFAULT}.
      *
+     * 设置 WebView 的缓存模式
      * @param mode the mode to use
      */
     public abstract void setCacheMode(@CacheMode int mode);

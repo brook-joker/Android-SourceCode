@@ -610,13 +610,16 @@ public class HashMap<K,V> extends AbstractMap<K,V>
         Node<K,V>[] tab; Node<K,V> first, e; int n; K k;
         if ((tab = table) != null && (n = tab.length) > 0 &&
             (first = tab[(n - 1) & hash]) != null) {
+            // 判断第一个节点是不是就是需要的
             if (first.hash == hash && // always check first node
                 ((k = first.key) == key || (key != null && key.equals(k))))
                 return first;
             if ((e = first.next) != null) {
+                //// 判断是否是红黑树
                 if (first instanceof TreeNode)
                     return ((TreeNode<K,V>)first).getTreeNode(hash, key);
                 do {
+                    // 链表遍历
                     if (e.hash == hash &&
                         ((k = e.key) == key || (key != null && key.equals(k))))
                         return e;
@@ -788,10 +791,13 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                     // 如果该数组位置上只有单个元素，那就简单了，简单迁移这个元素就可以了
                     if (e.next == null)
                         newTab[e.hash & (newCap - 1)] = e;
-
+                    // 如果是红黑树，具体我们就不展开了
                     else if (e instanceof TreeNode)
                         ((TreeNode<K,V>)e).split(this, newTab, j, oldCap);
                     else { // preserve order
+                        // 这块是处理链表的情况，
+                        // 需要将此链表拆成两个链表，放到新的数组中，并且保留原来的先后顺序
+                        // loHead、loTail 对应一条链表，hiHead、hiTail 对应另一条链表，代码还是比较简单的
                         Node<K,V> loHead = null, loTail = null;
                         Node<K,V> hiHead = null, hiTail = null;
                         Node<K,V> next;
@@ -814,10 +820,12 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                         } while ((e = next) != null);
                         if (loTail != null) {
                             loTail.next = null;
+                            // 第一条链表
                             newTab[j] = loHead;
                         }
                         if (hiTail != null) {
                             hiTail.next = null;
+                            // 第二条链表的新的位置是 j + oldCap，这个很好理解
                             newTab[j + oldCap] = hiHead;
                         }
                     }

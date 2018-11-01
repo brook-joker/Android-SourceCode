@@ -31,6 +31,7 @@ public class WebChromeClient {
      * @param view The WebView that initiated the callback.
      * @param newProgress Current page loading progress, represented by
      *                    an integer between 0 and 100.
+     * 当前 WebView 加载网页进度。
      */
     public void onProgressChanged(WebView view, int newProgress) {}
 
@@ -38,6 +39,7 @@ public class WebChromeClient {
      * Notify the host application of a change in the document title.
      * @param view The WebView that initiated the callback.
      * @param title A String containing the new title of the document.
+     * 接收web页面的 Title
      */
     public void onReceivedTitle(WebView view, String title) {}
 
@@ -45,6 +47,7 @@ public class WebChromeClient {
      * Notify the host application of a new favicon for the current page.
      * @param view The WebView that initiated the callback.
      * @param icon A Bitmap containing the favicon for the current page.
+     * 接收web页面的icon
      */
     public void onReceivedIcon(WebView view, Bitmap icon) {}
 
@@ -53,6 +56,7 @@ public class WebChromeClient {
      * @param view The WebView that initiated the callback.
      * @param url The icon url.
      * @param precomposed True if the url is for a precomposed touch icon.
+     * 接收web页面的apple_touch_icon
      */
     public void onReceivedTouchIconUrl(WebView view, String url,
             boolean precomposed) {}
@@ -161,6 +165,7 @@ public class WebChromeClient {
      * @param message Message to be displayed in the window.
      * @param result A JsResult to confirm that the user hit enter.
      * @return boolean Whether the client will handle the alert dialog.
+     * Js 中调用 alert() 函数，产生的对话框。
      */
     public boolean onJsAlert(WebView view, String url, String message,
             JsResult result) {
@@ -198,6 +203,7 @@ public class WebChromeClient {
      * @param result A JsPromptResult used to send the user's reponse to
      *               javascript.
      * @return boolean Whether the client will handle the prompt dialog.
+     * 处理 JS 中的 Prompt对话框
      */
     public boolean onJsPrompt(WebView view, String url, String message,
             String defaultValue, JsPromptResult result) {
@@ -365,6 +371,7 @@ public class WebChromeClient {
      * should override this to process the log message as they see fit.
      * @param consoleMessage Object containing details of the console message.
      * @return true if the message is handled by the client.
+     * 输出 Web 端日志
      */
     public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
         // Call the old version of this function for backwards compatability.
