@@ -24,8 +24,10 @@ import java.io.InputStream;
 
 /**
  * BitmapRegionDecoder can be used to decode a rectangle region from an image.
+ * BitmapRegionDecoder可用于解码图像中的矩形区域。
  * BitmapRegionDecoder is particularly useful when an original image is large and
  * you only need parts of the image.
+ * 当原始图像很大并且您只需要部分图像时，BitmapRegionDecoder特别有用。
  *
  * <p>To create a BitmapRegionDecoder, call newInstance(...).
  * Given a BitmapRegionDecoder, users can call decodeRegion() repeatedly
@@ -42,6 +44,7 @@ public final class BitmapRegionDecoder {
     /**
      * Create a BitmapRegionDecoder from the specified byte array.
      * Currently only the JPEG and PNG formats are supported.
+     * 仅支持JPEG和PNG图片
      *
      * @param data byte array of compressed image data.
      * @param offset offset into data for where the decoder should begin
@@ -54,6 +57,11 @@ public final class BitmapRegionDecoder {
      *                    the implementation may still decide to make a deep
      *                    copy of the input data. If an image is progressively encoded,
      *                    allowing sharing may degrade the decoding speed.
+     *                    如果为true,那么BitmapRegionDecoder对输入的内容持有一个浅引用
+     *                    如果为false,那么BitmapRegionDecoder将会复制一份输入数据,并保留它
+     *                    即使允许共享,实现仍可决定对输入数据进行深度复制。
+     *                    如果逐步编码图像,则允许共享可能降低解码速度
+     *
      * @return BitmapRegionDecoder, or null if the image data could not be decoded.
      * @throws IOException if the image format is not supported or can not be decoded.
      */
@@ -120,6 +128,7 @@ public final class BitmapRegionDecoder {
             // pass some temp storage down to the native code. 1024 is made up,
             // but should be large enough to avoid too many small calls back
             // into is.read(...).
+            //暂存区16K
             byte [] tempStorage = new byte[16 * 1024];
             return nativeNewInstance(is, tempStorage, isShareable);
         }

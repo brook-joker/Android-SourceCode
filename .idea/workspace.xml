@@ -2,30 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6bf4e05c-b562-4303-9090-bb1351efa98e" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/android/webview/chromium/ContentSettingsAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/webview/chromium/CookieManagerAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/webview/chromium/DrawGLFunctor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/webview/chromium/GeolocationPermissionsAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/webview/chromium/GraphicsUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/webview/chromium/ResourceProvider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/webview/chromium/UnimplementedWebViewApi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/webview/chromium/WebBackForwardListChromium.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/webview/chromium/WebHistoryItemChromium.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/webview/chromium/WebIconDatabaseAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/webview/chromium/WebStorageAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/webview/chromium/WebViewChromium.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/webview/chromium/WebViewChromiumFactoryProvider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/webview/chromium/WebViewContentsClientAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/android/webview/chromium/WebViewDatabaseAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/java/util/concurrent/ConcurrentHashMap7.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libcore/net/MimeUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/webkit/WebChromeClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/webkit/WebChromeClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/webkit/WebSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/webkit/WebSettings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/webkit/WebView.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/webkit/WebView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/webkit/WebViewClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/webkit/WebViewClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/webkit/WebViewProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/webkit/WebViewProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/java/util/HashMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/java/util/HashMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/graphics/BitmapRegionDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/graphics/BitmapRegionDecoder.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,68 +18,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="WebView.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/android/webkit/WebView.java">
+      <file leaf-file-name="BitmapRegionDecoder.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/android/graphics/BitmapRegionDecoder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="27">
-              <caret line="2327" column="36" selection-start-line="2327" selection-start-column="36" selection-end-line="2327" selection-end-column="36" />
-              <folding>
-                <element signature="e#16181#16182#0" expanded="true" />
-                <element signature="e#16223#16224#0" expanded="true" />
-                <element signature="e#84121#84122#0" expanded="true" />
-                <element signature="e#84153#84154#0" expanded="true" />
-                <element signature="e#90859#90860#0" expanded="true" />
-                <element signature="e#90910#90911#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WebViewFactory.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/android/webkit/WebViewFactory.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="55" column="10" selection-start-line="55" selection-start-column="10" selection-end-line="55" selection-end-column="10" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WebViewProvider.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/android/webkit/WebViewProvider.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5994">
-              <caret line="268" column="54" selection-start-line="268" selection-start-column="16" selection-end-line="268" selection-end-column="54" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WebViewClient.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/android/webkit/WebViewClient.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8316">
-              <caret line="329" column="34" selection-start-line="329" selection-start-column="16" selection-end-line="329" selection-end-column="34" />
-              <folding>
-                <element signature="e#1895#1896#0" expanded="true" />
-                <element signature="e#1923#1924#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WebChromeClient.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/android/webkit/WebChromeClient.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="26" column="20" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WebSettings.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/android/webkit/WebSettings.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-496">
-              <caret line="167" column="30" selection-start-line="167" selection-start-column="16" selection-end-line="167" selection-end-column="30" />
+            <state relative-caret-position="196">
+              <caret line="122" column="58" lean-forward="true" selection-start-line="122" selection-start-column="58" selection-end-line="122" selection-end-column="58" />
             </state>
           </provider>
         </entry>
@@ -117,13 +38,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>clearMa</find>
-      <find>REMOVE</find>
-      <find>SETv</find>
-      <find>setVertical</find>
-      <find>stopLoading</find>
-      <find>clearView</find>
-      <find>clearFormData</find>
       <find>onPause</find>
       <find>appCA</find>
       <find>setAppCachePath</find>
@@ -147,6 +61,13 @@
       <find>WebSettings</find>
       <find>ViewDelegate</find>
       <find>mProvider</find>
+      <find>setBack</find>
+      <find>setBackgroundColor</find>
+      <find>mBaseColor</find>
+      <find>register</find>
+      <find>mDataSetObserver</find>
+      <find>notifyDa</find>
+      <find>notifyDataSetChanged</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -165,13 +86,14 @@
         <option value="$PROJECT_DIR$/java/com/android/webview/chromium/DrawGLFunctor.java" />
         <option value="$PROJECT_DIR$/android/webview/chromium/DrawGLFunctor.java" />
         <option value="$PROJECT_DIR$/android/webkit/WebSettings.java" />
+        <option value="$PROJECT_DIR$/android/graphics/BitmapRegionDecoder.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds">
     <option name="y" value="23" />
     <option name="width" value="1440" />
-    <option name="height" value="820" />
+    <option name="height" value="814" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -181,45 +103,14 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="Android-SourceCode" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Android-SourceCode" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Android-SourceCode" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Android-SourceCode" type="462c0819:PsiDirectoryNode" />
-              <item name="android" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Android-SourceCode" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Android-SourceCode" type="462c0819:PsiDirectoryNode" />
-              <item name="android" type="462c0819:PsiDirectoryNode" />
-              <item name="chromium" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Android-SourceCode" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Android-SourceCode" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Android-SourceCode" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Android-SourceCode" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
       <pane id="AndroidView" />
+      <pane id="ProjectPane" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="WebViewChromiumFactoryProvider&#9;PSI&#9;JAVA://android.webview.chromium.WebViewChromiumFactoryProvider&#10;WebChromeClient&#9;PSI&#9;JAVA://android.webkit.WebChromeClient&#10;WebViewClient&#9;PSI&#9;JAVA://android.webkit.WebViewClient&#10;WebSet&#9;PSI&#9;JAVA://android.webkit.WebSettings&#10;MimeTypeMap&#9;PSI&#9;JAVA://android.webkit.MimeTypeMap&#10;WebView&#9;PSI&#9;JAVA://android.webkit.WebView&#10;Hash&#9;FILE&#9;file:///Users/maqiang/Documents/GitHub/Android-SourceCode/java/util/HashMap7.java&#10;Vector&#9;PSI&#9;JAVA://java.util.Vector&#10;Ve&#9;FILE&#9;jar:///Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/src.zip!/java.base/java/util/Vector.java&#10;HashTab&#9;PSI&#9;JAVA://java.util.Hashtable&#10;Concur&#9;PSI&#9;JAVA://java.util.concurrent.ConcurrentHashMap" />
+    <property name="SearchEverywhereHistoryKey" value="BitmapRegionDecoder&#9;FILE&#9;file:///Users/maqiang/Documents/GitHub/Android-SourceCode/android/graphics/BitmapRegionDecoder.java&#10;DataSetObservable&#9;PSI&#9;JAVA://android.database.DataSetObservable&#10;ArrayAdapter&#9;PSI&#9;JAVA://android.widget.ArrayAdapter&#10;AD&#9;FILE&#9;file:///Users/maqiang/Documents/GitHub/Android-SourceCode/android/widget/Adapter.java&#10;List&#9;FILE&#9;file:///Users/maqiang/Documents/GitHub/Android-SourceCode/android/widget/ListView.java&#10;View&#9;PSI&#9;JAVA://android.view.View&#10;WebViewChromiumFactoryProvider&#9;PSI&#9;JAVA://android.webview.chromium.WebViewChromiumFactoryProvider&#10;WebChromeClient&#9;PSI&#9;JAVA://android.webkit.WebChromeClient&#10;WebViewClient&#9;PSI&#9;JAVA://android.webkit.WebViewClient&#10;WebSet&#9;PSI&#9;JAVA://android.webkit.WebSettings&#10;MimeTypeMap&#9;PSI&#9;JAVA://android.webkit.MimeTypeMap&#10;WebView&#9;PSI&#9;JAVA://android.webkit.WebView&#10;Hash&#9;FILE&#9;file:///Users/maqiang/Documents/GitHub/Android-SourceCode/java/util/HashMap7.java&#10;Vector&#9;PSI&#9;JAVA://java.util.Vector&#10;Ve&#9;FILE&#9;jar:///Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/src.zip!/java.base/java/util/Vector.java&#10;HashTab&#9;PSI&#9;JAVA://java.util.Hashtable&#10;Concur&#9;PSI&#9;JAVA://java.util.concurrent.ConcurrentHashMap" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -564,17 +455,18 @@
       <workItem from="1528789320764" duration="172000" />
       <workItem from="1528789702047" duration="3030000" />
     </task>
-    <task id="LOCAL-00001" summary="AMS相关">
-      <created>1530417734699</created>
+    <task id="LOCAL-00001" summary="新增WebView的相关源码">
+      <created>1541044793171</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1530417734699</updated>
+      <updated>1541044793171</updated>
     </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="820" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="814" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
@@ -586,10 +478,10 @@
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.66853935" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.6685315" />
       <window_info id="Capture Tool" order="2" />
       <window_info anchor="right" id="Designer" order="3" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.062901154" weight="0.29657322" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.062901154" weight="0.3004292" />
       <window_info id="Structure" order="1" sideWeight="0.93709886" side_tool="true" weight="0.25732088" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
@@ -611,7 +503,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="AMS相关" />
-    <option name="LAST_COMMIT_MESSAGE" value="AMS相关" />
+    <MESSAGE value="新增WebView的相关源码" />
+    <option name="LAST_COMMIT_MESSAGE" value="新增WebView的相关源码" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -619,62 +512,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/android/widget/BaseAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1053">
-          <caret line="70" column="17" selection-start-line="70" selection-start-column="17" selection-end-line="70" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/android/database/DataSetObserver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/android/widget/Adapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3078">
-          <caret line="130" column="57" selection-start-line="130" selection-start-column="57" selection-end-line="130" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/android/widget/ListView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="810">
-          <caret line="82" column="38" selection-start-line="82" selection-start-column="38" selection-end-line="82" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/android/widget/AbsListView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="6586" column="55" selection-start-line="6586" selection-start-column="55" selection-end-line="6586" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/android/app/NotificationManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="75" column="78" selection-start-line="75" selection-start-column="73" selection-end-line="75" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/src.zip!/java.base/java/lang/AbstractStringBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="250" column="42" selection-start-line="250" selection-start-column="42" selection-end-line="250" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java/lang/StringBuffer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="193" column="22" selection-start-line="193" selection-start-column="22" selection-end-line="193" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/java/util/Stack.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-221">
@@ -801,13 +638,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/android/view/View.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1419">
-          <caret line="15044" lean-forward="true" selection-start-line="15044" selection-end-line="15044" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/src.zip!/java.base/java/lang/Integer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="293">
@@ -924,10 +754,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8316">
           <caret line="329" column="34" selection-start-line="329" selection-start-column="16" selection-end-line="329" selection-end-column="34" />
-          <folding>
-            <element signature="e#1895#1896#0" expanded="true" />
-            <element signature="e#1923#1924#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -962,23 +788,78 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/android/webkit/WebView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
+        <state relative-caret-position="59562">
           <caret line="2327" column="36" selection-start-line="2327" selection-start-column="36" selection-end-line="2327" selection-end-column="36" />
-          <folding>
-            <element signature="e#16181#16182#0" expanded="true" />
-            <element signature="e#16223#16224#0" expanded="true" />
-            <element signature="e#84121#84122#0" expanded="true" />
-            <element signature="e#84153#84154#0" expanded="true" />
-            <element signature="e#90859#90860#0" expanded="true" />
-            <element signature="e#90910#90911#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/android/webkit/WebSettings.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-496">
+        <state relative-caret-position="27">
           <caret line="167" column="30" selection-start-line="167" selection-start-column="16" selection-end-line="167" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/view/View.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="491751">
+          <caret line="18213" column="56" selection-start-line="18213" selection-start-column="56" selection-end-line="18213" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/graphics/drawable/ColorDrawable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="254" column="24" selection-start-line="254" selection-start-column="14" selection-end-line="254" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/widget/AbsListView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166239">
+          <caret line="6365" column="38" selection-start-line="6365" selection-start-column="38" selection-end-line="6365" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/widget/Adapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="23" column="76" selection-start-line="23" selection-start-column="76" selection-end-line="23" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/widget/ArrayAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1026">
+          <caret line="70" column="32" selection-start-line="70" selection-start-column="32" selection-end-line="70" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/database/DataSetObservable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="23" column="23" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/widget/BaseAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="30" column="54" selection-start-line="30" selection-start-column="36" selection-end-line="30" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/widget/ListView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="1669" column="36" selection-start-line="1669" selection-start-column="36" selection-end-line="1669" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/graphics/BitmapRegionDecoder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="122" column="58" lean-forward="true" selection-start-line="122" selection-start-column="58" selection-end-line="122" selection-end-column="58" />
         </state>
       </provider>
     </entry>
