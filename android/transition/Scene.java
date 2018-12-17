@@ -28,6 +28,8 @@ import android.view.ViewGroup;
  * configured to automatically run a Transition when it is applied, which will
  * animate the various property changes that take place during the
  * scene change.
+ * 场景表示应用场景时视图层次结构中的各种属性将具有的值集合。
+ * 可以将场景配置为在应用过渡时自动运行过渡，这将为场景更改期间发生的各种属性更改设置动画。
  */
 public final class Scene {
 
@@ -35,6 +37,7 @@ public final class Scene {
     private int mLayoutId = -1;
     private ViewGroup mSceneRoot;
     private View mLayout; // alternative to layoutId
+    //进入行为,退出行为
     Runnable mEnterAction, mExitAction;
 
     /**

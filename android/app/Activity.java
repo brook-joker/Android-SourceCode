@@ -69,6 +69,7 @@ import android.os.RemoteException;
 import android.os.StrictMode;
 import android.os.SystemProperties;
 import android.os.UserHandle;
+import android.support.v7.app.WindowDecorActionBar;
 import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -114,11 +115,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.AdapterView;
 import android.widget.Toast;
 import android.widget.Toolbar;
-
-import com.android.internal.app.IVoiceInteractor;
-import com.android.internal.app.ToolbarActionBar;
-import com.android.internal.app.WindowDecorActionBar;
-import com.android.internal.policy.PhoneWindow;
+import frameworks.base.core.java.com.android.internal.policy.PhoneWindow;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -2384,6 +2381,7 @@ public class Activity extends ContextThemeWrapper
      * initializes the ActionBar with the view, and sets mActionBar.
      */
     private void initWindowDecorActionBar() {
+        //PhoneWindow
         Window window = getWindow();
 
         // Initializing the window decor can change window feature flags.
@@ -2411,6 +2409,7 @@ public class Activity extends ContextThemeWrapper
      * @see #setContentView(android.view.View, android.view.ViewGroup.LayoutParams)
      */
     public void setContentView(@LayoutRes int layoutResID) {
+        //getWindow获取的是PhoneWindow,所以这里是调用的PhoneWindow的setContentView方法
         getWindow().setContentView(layoutResID);
         initWindowDecorActionBar();
     }
@@ -6615,7 +6614,7 @@ public class Activity extends ContextThemeWrapper
         attachBaseContext(context);
 
         mFragments.attachHost(null /*parent*/);
-
+        //PhoneWindow初始化的地方
         mWindow = new PhoneWindow(this, window);
         mWindow.setWindowControllerCallback(this);
         mWindow.setCallback(this);

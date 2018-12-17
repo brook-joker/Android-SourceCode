@@ -1037,8 +1037,10 @@ public final class ViewRootImpl implements ViewParent,
 
     @Override
     public void requestFitSystemWindows() {
+        //线程检查  检查当前线程是不是主线程（UI线程）
         checkThread();
         mApplyInsetsRequested = true;
+        //绘制视图
         scheduleTraversals();
     }
 
@@ -1220,9 +1222,13 @@ public final class ViewRootImpl implements ViewParent,
     }
 
     void scheduleTraversals() {
+        // 当mTraversalScheduled为false，也就是没有重绘请求或者没有未执行完的重绘时才开始重绘
         if (!mTraversalScheduled) {
+            // 一旦开始重回此处设置为True，当执行完毕后调用unscheduleTraversals函数，
+            // 重新设置为false，避免同时存在多次绘制
             mTraversalScheduled = true;
             mTraversalBarrier = mHandler.getLooper().getQueue().postSyncBarrier();
+            // 将消息放入消息处理器中，最终调用doTraversal方法
             mChoreographer.postCallback(
                     Choreographer.CALLBACK_TRAVERSAL, mTraversalRunnable, null);
             if (!mUnbufferedInputDispatch) {
@@ -1251,6 +1257,7 @@ public final class ViewRootImpl implements ViewParent,
                 Debug.startMethodTracing("ViewAncestor");
             }
 
+            //执行绘制流程
             performTraversals();
 
             if (mProfile) {
@@ -1712,6 +1719,8 @@ public final class ViewRootImpl implements ViewParent,
         final int surfaceGenerationId = mSurface.getGenerationId();
 
         final boolean isViewVisible = viewVisibility == View.VISIBLE;
+        // 这里是需要测量的条件：第一次加载View，需要调整窗口大小，需要适应系统窗口，视图显示状态改变，
+        // 视图布局参数不为空，强制窗口重新布局。首先要满足这个几个条件才可能执行测量
         if (mFirst || windowShouldResize || insetsChanged ||
                 viewVisibilityChanged || params != null || mForceNextWindowRelayout) {
             mForceNextWindowRelayout = false;
@@ -2004,6 +2013,7 @@ public final class ViewRootImpl implements ViewParent,
                 }
             }
 
+            // 窗口没有停止，或者通知需要绘制
             if (!mStopped || mReportNextDraw) {
                 boolean focusChangedDueToTouchMode = ensureTouchModeLocally(
                         (relayoutResult&WindowManagerGlobal.RELAYOUT_RES_IN_TOUCH_MODE) != 0);
@@ -2020,6 +2030,7 @@ public final class ViewRootImpl implements ViewParent,
                             + " coveredInsetsChanged=" + contentInsetsChanged);
 
                      // Ask host how big it wants to be
+                    // 1.第一步：测量
                     performMeasure(childWidthMeasureSpec, childHeightMeasureSpec);
 
                     // Implementation of weights from WindowManager.LayoutParams
@@ -2065,6 +2076,7 @@ public final class ViewRootImpl implements ViewParent,
         boolean triggerGlobalLayoutListener = didLayout
                 || mAttachInfo.mRecomputeGlobalAttributes;
         if (didLayout) {
+            // 2.第二步：布局
             performLayout(lp, mWidth, mHeight);
 
             // By this point all views have been sized and positioned
@@ -2203,7 +2215,7 @@ public final class ViewRootImpl implements ViewParent,
         }
 
         boolean cancelDraw = mAttachInfo.mTreeObserver.dispatchOnPreDraw() || !isViewVisible;
-
+        /// 3.第三步：绘制
         if (!cancelDraw && !newSurface) {
             if (mPendingTransitions != null && mPendingTransitions.size() > 0) {
                 for (int i = 0; i < mPendingTransitions.size(); ++i) {
@@ -2214,6 +2226,7 @@ public final class ViewRootImpl implements ViewParent,
 
             performDraw();
         } else {
+            // 如果取消了绘制或者是新的Surface，那么要重新测量、布局和绘制
             if (isViewVisible) {
                 // Try again
                 scheduleTraversals();
