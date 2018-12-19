@@ -53,6 +53,7 @@ final class SharedPreferencesImpl implements SharedPreferences {
     private static final String TAG = "SharedPreferencesImpl";
     private static final boolean DEBUG = false;
 
+    // 锁规则
     // Lock ordering rules:
     //  - acquire SharedPreferencesImpl.this before EditorImpl.this
     //  - acquire mWritingToDiskLock before EditorImpl.this
@@ -74,6 +75,7 @@ final class SharedPreferencesImpl implements SharedPreferences {
 
     SharedPreferencesImpl(File file, int mode) {
         mFile = file;
+        //创建为.bak为后缀的备份文件
         mBackupFile = makeBackupFile(file);
         mMode = mode;
         mLoaded = false;
@@ -81,8 +83,15 @@ final class SharedPreferencesImpl implements SharedPreferences {
         startLoadFromDisk();
     }
 
+    /**
+     * 从磁盘加载SP文件
+     * 首次使用则创建相应xml文件;
+     * 异步加载文件内容到内存; 此时执行getXXX()和setxxx()以及edit()方法都是阻塞等待的, 直到文件数据全部加载到内存;
+     * 一旦完全加载到内存, 后续的getXXX()则是直接访问内存.
+     */
     private void startLoadFromDisk() {
         synchronized (this) {
+            //标记SP文件是否加载到内存
             mLoaded = false;
         }
         new Thread("SharedPreferencesImpl-load") {
@@ -131,13 +140,13 @@ final class SharedPreferencesImpl implements SharedPreferences {
         synchronized (SharedPreferencesImpl.this) {
             mLoaded = true;
             if (map != null) {
-                mMap = map;
-                mStatTimestamp = stat.st_mtime;
-                mStatSize = stat.st_size;
+                mMap = map;//从文件读取的信息保存到mMap
+                mStatTimestamp = stat.st_mtime;//更新修改时间
+                mStatSize = stat.st_size;//更新文件大小
             } else {
                 mMap = new HashMap<>();
             }
-            notifyAll();
+            notifyAll();//唤醒处于等待状态的线程
         }
     }
 
@@ -204,6 +213,7 @@ final class SharedPreferencesImpl implements SharedPreferences {
         }
         while (!mLoaded) {
             try {
+                //当没有加载完成,则进入等待状态
                 wait();
             } catch (InterruptedException unused) {
             }
@@ -218,6 +228,14 @@ final class SharedPreferencesImpl implements SharedPreferences {
         }
     }
 
+    /**
+     * 当loadFromDisk没有执行完成, 则会阻塞查询操作;
+     * 当数据加载完成, 则直接从mMap来查询相应数据;
+     * @param key The name of the preference to retrieve.
+     * @param defValue Value to return if this preference does not exist.
+     *
+     * @return
+     */
     @Nullable
     public String getString(String key, @Nullable String defValue) {
         synchronized (this) {
@@ -280,6 +298,7 @@ final class SharedPreferencesImpl implements SharedPreferences {
         //      context.getSharedPreferences(..).edit().putString(..).apply()
         //
         // ... all without blocking.
+        //该过程同样要等待awaitLoadedLocked完成, 然后创建EditorImpl对象. 而EditorImpl作为SharedPreferencesImpl的内部类,其继承于Editor类.
         synchronized (this) {
             awaitLoadedLocked();
         }
@@ -302,6 +321,12 @@ final class SharedPreferencesImpl implements SharedPreferences {
         }
     }
 
+    /**
+     * 从这里可以看出, 这些数据修改操作仅仅是修改mModified和mClear. 直到数据提交commit或许apply过程,
+     * 才会真正的把数据更新到SharedPreferencesImpl(简称SPI).
+     * 比如设置mClear=true则会情况SPI的mMap数据.从这里可以看出, 这些数据修改操作仅仅是修改mModified和mClear.
+     * 直到数据提交commit或许apply过程, 才会真正的把数据更新到SharedPreferencesImpl(简称SPI). 比如设置mClear=true则会清空SPI的mMap数据.
+     */
     public final class EditorImpl implements Editor {
         private final Map<String, Object> mModified = Maps.newHashMap();
         private boolean mClear = false;
@@ -358,26 +383,35 @@ final class SharedPreferencesImpl implements SharedPreferences {
             }
         }
 
+        /**
+         * apply跟commit的最大区别 在于apply的写入文件操作是在单线程的线程池来完成.
+         *
+         * apply方法开始的时候, 会把awaitCommit放入QueuedWork;
+         * 文件写入操作完成, 则会把相应的awaitCommit从QueuedWork中移除.
+         */
         public void apply() {
+            //将数据同步到SharedPreferencesImpl的mMap, 并保存到MemoryCommitResult的mapToWriteToDisk
             final MemoryCommitResult mcr = commitToMemory();
             final Runnable awaitCommit = new Runnable() {
                     public void run() {
                         try {
+                            //进入等待状态
                             mcr.writtenToDiskLatch.await();
                         } catch (InterruptedException ignored) {
                         }
                     }
                 };
-
+            //将awaitCommit添加到QueuedWork
             QueuedWork.add(awaitCommit);
 
             Runnable postWriteRunnable = new Runnable() {
                     public void run() {
                         awaitCommit.run();
+                        //从QueuedWork移除
                         QueuedWork.remove(awaitCommit);
                     }
                 };
-
+            //写入到磁盘文件; 先之前把原有数据保存到.bak为后缀的文件,用于在写磁盘的过程出现任何异常可恢复数据;
             SharedPreferencesImpl.this.enqueueDiskWrite(mcr, postWriteRunnable);
 
             // Okay to notify the listeners before it's hit disk
@@ -388,6 +422,11 @@ final class SharedPreferencesImpl implements SharedPreferences {
         }
 
         // Returns true if any changes were made
+        // 将mMap信息赋值给mapToWriteToDisk, 并mDiskWritesInFlight加1;
+        // 当mClear为true, 则直接清空mMap;
+        // 当value值为this或null, 则移除相应的key;
+        // 当value值发生改变, 则会更新到mMap;
+        // 只要有key/value发生改变(新增, 删除), 则设置mcr.changesMade = true. 最后会清空EditorImpl中的mModified数据.
         private MemoryCommitResult commitToMemory() {
             MemoryCommitResult mcr = new MemoryCommitResult();
             synchronized (SharedPreferencesImpl.this) {
@@ -404,6 +443,7 @@ final class SharedPreferencesImpl implements SharedPreferences {
                 mcr.mapToWriteToDisk = mMap;
                 mDiskWritesInFlight++;
 
+                //是否有监听key改变的监听者
                 boolean hasListeners = mListeners.size() > 0;
                 if (hasListeners) {
                     mcr.keysModified = new ArrayList<String>();
@@ -412,6 +452,7 @@ final class SharedPreferencesImpl implements SharedPreferences {
                 }
 
                 synchronized (this) {
+                    //当mClear为true, 则直接清空mMap
                     if (mClear) {
                         if (!mMap.isEmpty()) {
                             mcr.changesMade = true;
@@ -426,6 +467,8 @@ final class SharedPreferencesImpl implements SharedPreferences {
                         // "this" is the magic value for a removal mutation. In addition,
                         // setting a value to "null" for a given key is specified to be
                         // equivalent to calling remove on that key.
+                        // 程序员的恶趣味,在remove的时候其实是修改当前对应的key的value为this
+                        // 所以在判断条件为value == this or value == null时再remove
                         if (v == this || v == null) {
                             if (!mMap.containsKey(k)) {
                                 continue;
@@ -440,19 +483,25 @@ final class SharedPreferencesImpl implements SharedPreferences {
                             }
                             mMap.put(k, v);
                         }
-
+                        // changesMade代表数据是否有改变
                         mcr.changesMade = true;
                         if (hasListeners) {
                             mcr.keysModified.add(k);
                         }
                     }
-
+                    //清空EditorImpl中的mModified数据
                     mModified.clear();
                 }
             }
             return mcr;
         }
 
+        /**
+         * 当没有key发生改变, 则直接返回; 否则执行step2;
+         * 将mMap全部信息写入文件, 如果写入成功则删除备份文件,如果写入失败则删除mFile.
+         * 每次commit是把全部数据更新到文件, 所以每个文件的数据量必须保证足够精简.
+         * @return
+         */
         public boolean commit() {
             MemoryCommitResult mcr = commitToMemory();
             SharedPreferencesImpl.this.enqueueDiskWrite(
@@ -512,6 +561,7 @@ final class SharedPreferencesImpl implements SharedPreferences {
         final Runnable writeToDiskRunnable = new Runnable() {
                 public void run() {
                     synchronized (mWritingToDiskLock) {
+                        //执行文件写入操作
                         writeToFile(mcr);
                     }
                     synchronized (SharedPreferencesImpl.this) {
@@ -527,17 +577,20 @@ final class SharedPreferencesImpl implements SharedPreferences {
 
         // Typical #commit() path with fewer allocations, doing a write on
         // the current thread.
-        if (isFromSyncCommit) {
+        if (isFromSyncCommit) { //commit方法会进入该分支
             boolean wasEmpty = false;
             synchronized (SharedPreferencesImpl.this) {
+                //commitToMemory过程会加1,则wasEmpty=true
                 wasEmpty = mDiskWritesInFlight == 1;
             }
             if (wasEmpty) {
+                //跳转到上面
                 writeToDiskRunnable.run();
                 return;
             }
         }
-
+        // commit 不执行该方法
+        // apply 将任务放入单线程的线程池来执行
         QueuedWork.singleThreadExecutor().execute(writeToDiskRunnable);
     }
 
@@ -567,7 +620,9 @@ final class SharedPreferencesImpl implements SharedPreferences {
     // Note: must hold mWritingToDiskLock
     private void writeToFile(MemoryCommitResult mcr) {
         // Rename the current file so it may be used as a backup during the next read
+        // 重命名当前文件，以便在下次读取时将其用作备份
         if (mFile.exists()) {
+            ////没有key发生改变, 则直接返回
             if (!mcr.changesMade) {
                 // If the file already exists, but no changes were
                 // made to the underlying map, it's wasteful to
@@ -577,6 +632,7 @@ final class SharedPreferencesImpl implements SharedPreferences {
                 return;
             }
             if (!mBackupFile.exists()) {
+                //当备份文件不存在, 则把mFile重命名为备份文件
                 if (!mFile.renameTo(mBackupFile)) {
                     Log.e(TAG, "Couldn't rename file " + mFile
                           + " to backup file " + mBackupFile);
@@ -584,6 +640,7 @@ final class SharedPreferencesImpl implements SharedPreferences {
                     return;
                 }
             } else {
+                //否则,直接删除mFile
                 mFile.delete();
             }
         }
@@ -597,6 +654,7 @@ final class SharedPreferencesImpl implements SharedPreferences {
                 mcr.setDiskWriteResult(false);
                 return;
             }
+            //将mMap全部信息写入文件
             XmlUtils.writeMapXml(mcr.mapToWriteToDisk, str);
             FileUtils.sync(str);
             str.close();
@@ -611,7 +669,9 @@ final class SharedPreferencesImpl implements SharedPreferences {
                 // Do nothing
             }
             // Writing was successful, delete the backup file if there is one.
+            //写入成功, 则删除备份文件
             mBackupFile.delete();
+            //返回写入成功, 唤醒等待线程
             mcr.setDiskWriteResult(true);
             return;
         } catch (XmlPullParserException e) {
@@ -620,11 +680,13 @@ final class SharedPreferencesImpl implements SharedPreferences {
             Log.w(TAG, "writeToFile: Got exception:", e);
         }
         // Clean up an unsuccessfully written file
+        //如果写入文件的操作失败, 则删除未成功写入的文件
         if (mFile.exists()) {
             if (!mFile.delete()) {
                 Log.e(TAG, "Couldn't clean up partially-written file " + mFile);
             }
         }
+        //返回写入失败, 唤醒等待线程
         mcr.setDiskWriteResult(false);
     }
 }

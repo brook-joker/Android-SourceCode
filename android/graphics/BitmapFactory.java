@@ -47,6 +47,20 @@ public class BitmapFactory {
         }
 
         /**
+         * 用于重用已有的Bitmap，这样可以减少内存的分配与回收，提高性能。但是使用该属性存在很多限制：
+         * 在API19及以上，存在两个限制条件：
+         *
+         * 被复用的Bitmap必须是Mutable。违反此限制，不会抛出异常，且会返回新申请内存的Bitmap。
+         * 被复用的Bitmap的内存大小（通过Bitmap.getAllocationByteCount方法获得，API19及以上才有）必须大于等于被加载的Bitmap的内存大小。
+         * 违反此限制，将会导致复用失败，抛出异常IllegalArgumentException(Problem decoding into existing bitmap）
+         *
+         * 在API11 ~ API19之间，还存在额外的限制：
+         *
+         * 被复用的Bitmap的宽高必须等于被加载的Bitmap的原始宽高。（注意这里是指原始宽高，即没进行缩放之前的宽高）
+         * 被加载Bitmap的Options.inSampleSize必须明确指定为1。
+         * 被加载Bitmap的Options.inPreferredConfig字段设置无效，因为会被被复用的Bitmap的inPreferredConfig值所覆盖（不然，所占内存可能就不一样了）
+         *
+         *
          * If set, decode methods that take the Options object will attempt to
          * reuse this bitmap when loading content. If the decode operation
          * cannot use this bitmap, the decode method will return
@@ -103,6 +117,9 @@ public class BitmapFactory {
          * If set, decode methods will always return a mutable Bitmap instead of
          * an immutable one. This can be used for instance to programmatically apply
          * effects to a Bitmap loaded through BitmapFactory.
+         * 若为true，则返回的Bitmap是可变的，可以作为Canvas的底层Bitmap使用。
+         * 若为false，则返回的Bitmap是不可变的，只能进行读操作。
+         * 如果要修改Bitmap，那就必须返回可变的bitmap，例如:修改某个像素的颜色值(setPixel)
          */
         @SuppressWarnings({"UnusedDeclaration"}) // used in native code
         public boolean inMutable;
@@ -111,6 +128,9 @@ public class BitmapFactory {
          * If set to true, the decoder will return null (no bitmap), but
          * the out... fields will still be set, allowing the caller to query
          * the bitmap without having to allocate the memory for its pixels.
+         * 获取Bitmap的宽度和高度最好的方式：
+         * 若inJustDecodeBounds为true，则不会把bitmap加载到内存(实际是在Native层解码了图片，但是没有生成Java层的Bitmap)，
+         * 只是获取该bitmap的原始宽（outWidth）和高（outHeight）
          */
         public boolean inJustDecodeBounds;
 
@@ -123,6 +143,9 @@ public class BitmapFactory {
          * number of pixels. Any value <= 1 is treated the same as 1. Note: the
          * decoder uses a final value based on powers of 2, any other value will
          * be rounded down to the nearest power of 2.
+         * 主要用于获取Bitmap的缩略图，例如：inSampleSize=2，那么bitmap的宽度和高度为原来尺寸的1/2。
+         * 像素总数则为原来的1/4。Any value <= 1 is treated the same as 1.
+         * 看了下代码，在Native层解码生成SKBitmap的像素数据时，会根据图片原始宽高除以inSampleSize，得到缩略图的宽高。
          */
         public int inSampleSize;
 
@@ -132,6 +155,11 @@ public class BitmapFactory {
          * the decoder will try to pick the best matching config based on the
          * system's screen depth, and characteristics of the original image such
          * as if it has per-pixel alpha (requiring a config that also does).
+         * 表示一个像素需要多大的存储空间：
+         * 默认为ARGB_8888: 每个像素4字节. 共32位。
+         * Alpha_8: 只保存透明度，共8位，1字节。
+         * ARGB_4444: 共16位，2字节。
+         * RGB_565:共16位，2字节，只存储RGB值。
          * 
          * Image are loaded with the {@link Bitmap.Config#ARGB_8888} config by
          * default.
@@ -259,12 +287,28 @@ public class BitmapFactory {
          *
          * <p>If {@link #inPremultiplied} is set to false, and the image has alpha,
          * setting this flag to true may result in incorrect colors.
+         * 若为true，且inDensity和inTargetDensity不为0，那么缩放因子等于(inTargetDensity/inDensity)，并且bitmap的density等于inTargetDensity。
+         * 若为false，则不会进行缩放，并且bitmap的density等于inDensity(不为0的前提下),否则就是系统默认密度（160）
+         *
+         * inScaled属性默认为true，
+         * 当从Drawable资源文件夹加载图片资源时（通过BitmapFactory.decodeResource方法加载），
+         * inDensity默认初始化为图片所在文件夹对应的密度，而inTargetDensity则初始化为当前系统密度。
+         *
+         * 当从SD卡 or 二进制流加载图片资源时，这两个属性都默认为0（即不会对图片资源进行缩放），需要我们根据实际情况进行设置，
+         * 一般把inTargetDensity设置为当前系统密度，inDensity则需要根据图片实际尺寸和需求进行设置了。
+         *
+         *
          */
         public boolean inScaled;
 
         /**
          * @deprecated As of {@link android.os.Build.VERSION_CODES#LOLLIPOP}, this is
          * ignored.
+         * 从API21开始，这个属性被废弃了。
+         *
+         * 若inPurgeable为true，则表示BitmapFactory创建的用于存储Bitmap Pixel的内存空间，可以在系统内存不足时被回收。
+         * 当APP需要再次访问Bitmap的Pixel时（例如：绘制Bitmap或是调用getPixel)，
+         * 系统会再次调用BitmapFactory decode方法重新生成Bitmap的Pixel数组。
          *
          * In {@link android.os.Build.VERSION_CODES#KITKAT} and below, if this
          * is set to true, then the resulting bitmap will allocate its
@@ -300,6 +344,11 @@ public class BitmapFactory {
         /**
          * @deprecated As of {@link android.os.Build.VERSION_CODES#LOLLIPOP}, this is
          * ignored.
+         * 从API21开始，这个属性被废弃了。
+         *
+         * 表示是否进行深拷贝，与inPurgeable结合使用，inPurgeable为false时，该参数无意义。
+         * 若为true，share a reference to the input data (inputstream, array, etc.) ，即浅拷贝。
+         * 若为false，must make a deep copy.即深拷贝。
          *
          * In {@link android.os.Build.VERSION_CODES#KITKAT} and below, this
          * field works in conjuction with inPurgeable. If inPurgeable is false,
