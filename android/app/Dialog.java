@@ -60,6 +60,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
+import frameworks.base.core.java.com.android.internal.policy.PhoneWindow;
 
 import java.lang.ref.WeakReference;
 

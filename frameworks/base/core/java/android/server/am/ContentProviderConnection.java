@@ -22,15 +22,19 @@ import android.util.TimeUtils;
 
 /**
  * Represents a link between a content provider and client.
+ * 连接contentProvider与请求provider所对应的进程
  */
 public final class ContentProviderConnection extends Binder {
+    //目标provider
     public final ContentProviderRecord provider;
+    //请求该provider的客户端进程
     public final ProcessRecord client;
     public final long createTime;
     public int stableCount;
     public int unstableCount;
     // The client of this connection is currently waiting for the provider to appear.
     // Protected by the provider lock.
+    // 该连接的client进程正在等待该provider发布
     public boolean waiting;
     // The provider of this connection is now dead.
     public boolean dead;

@@ -42,6 +42,7 @@ final class ContentProviderRecord {
     public IContentProvider provider;
     public boolean noReleaseNeeded;
     // All attached clients
+    // 记录所有的连接
     final ArrayList<ContentProviderConnection> connections
             = new ArrayList<ContentProviderConnection>();
     //final HashSet<ProcessRecord> clients = new HashSet<ProcessRecord>();
