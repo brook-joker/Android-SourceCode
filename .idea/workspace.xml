@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6bf4e05c-b562-4303-9090-bb1351efa98e" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/graphics/BitmapRegionDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/graphics/BitmapRegionDecoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/Activity.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/Activity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/view/MotionEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/view/MotionEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/view/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/view/View.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/view/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/view/Window.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/widget/Scroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/widget/Scroller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/java/lang/ThreadLocal.java" beforeDir="false" afterPath="$PROJECT_DIR$/java/lang/ThreadLocal.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,11 +22,102 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="BitmapRegionDecoder.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/android/graphics/BitmapRegionDecoder.java">
+      <file leaf-file-name="Activity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/android/app/Activity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="122" column="58" lean-forward="true" selection-start-line="122" selection-start-column="58" selection-end-line="122" selection-end-column="58" />
+            <state relative-caret-position="223">
+              <caret line="2781" column="19" selection-start-line="2781" selection-start-column="19" selection-end-line="2781" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MotionEvent.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/android/view/MotionEvent.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="117">
+              <caret line="1617" column="10" selection-start-line="1617" selection-start-column="10" selection-end-line="1617" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Scroller.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/android/widget/Scroller.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="440">
+              <caret line="361" column="58" selection-start-line="361" selection-start-column="58" selection-end-line="361" selection-end-column="58" />
+              <folding>
+                <element signature="e#5350#5351#0" expanded="true" />
+                <element signature="e#5385#5386#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Looper.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/android/os/Looper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="55">
+              <caret line="87" column="12" selection-start-line="87" selection-start-column="12" selection-end-line="87" selection-end-column="12" />
+              <folding>
+                <element signature="e#2432#2440#0" expanded="true" />
+                <element signature="e#2964#2965#0" expanded="true" />
+                <element signature="e#2993#2994#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ThreadLocal.java" pinned="false" current-in-tab="false">
+        <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/src.zip!/java.base/java/lang/ThreadLocal.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="893">
+              <caret line="73" column="13" selection-start-line="73" selection-start-column="13" selection-end-line="73" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ThreadLocal.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/java/lang/ThreadLocal.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2315">
+              <caret line="171" column="15" selection-start-line="171" selection-start-column="15" selection-end-line="171" selection-end-column="15" />
+              <folding>
+                <element signature="e#4309#4310#0" expanded="true" />
+                <element signature="e#4336#4337#0" expanded="true" />
+                <element signature="e#8486#8487#0" expanded="true" />
+                <element signature="e#8538#8539#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="View.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/android/view/View.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="309">
+              <caret line="3376" column="26" selection-start-line="3376" selection-start-column="26" selection-end-line="3376" selection-end-column="26" />
+              <folding>
+                <element signature="e#529718#529719#0" expanded="true" />
+                <element signature="e#529770#529771#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ViewRootImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/android/view/ViewRootImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3026">
+              <caret line="2682" column="8" selection-start-line="2682" selection-start-column="8" selection-end-line="2682" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Window.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/android/view/Window.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="190">
+              <caret line="1518" column="7" selection-start-line="1518" selection-start-column="7" selection-end-line="1518" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -38,15 +133,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>onPause</find>
-      <find>appCA</find>
-      <find>setAppCachePath</find>
-      <find>setSupportZoom</find>
-      <find>setTextZoom</find>
-      <find>getLoadsImagesAutomatically</find>
-      <find>setDomStorageEnabled</find>
-      <find>setDatabaseEnabled</find>
-      <find>setAllowFileAccess</find>
       <find>setUserAgentString</find>
       <find>setAllowFileAccessFromFileURLs</find>
       <find>setAllowUniversalAccessFromFileURLs</find>
@@ -68,6 +154,15 @@
       <find>mDataSetObserver</find>
       <find>notifyDa</find>
       <find>notifyDataSetChanged</find>
+      <find>dispatchTouch</find>
+      <find>startSc</find>
+      <find>startsc</find>
+      <find>mScroller</find>
+      <find>scrollTo</find>
+      <find>scrollBy</find>
+      <find>SCROLL_MODE</find>
+      <find>computeScrollOffset</find>
+      <find>prepare</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -87,10 +182,17 @@
         <option value="$PROJECT_DIR$/android/webview/chromium/DrawGLFunctor.java" />
         <option value="$PROJECT_DIR$/android/webkit/WebSettings.java" />
         <option value="$PROJECT_DIR$/android/graphics/BitmapRegionDecoder.java" />
+        <option value="$PROJECT_DIR$/android/view/Window.java" />
+        <option value="$PROJECT_DIR$/android/app/Activity.java" />
+        <option value="$PROJECT_DIR$/android/view/MotionEvent.java" />
+        <option value="$PROJECT_DIR$/android/view/View.java" />
+        <option value="$PROJECT_DIR$/android/widget/Scroller.java" />
+        <option value="$PROJECT_DIR$/java/lang/ThreadLocal.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="74" />
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="814" />
@@ -103,14 +205,25 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
-      <pane id="ProjectPane" />
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="AndroidView" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Android-SourceCode" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Android-SourceCode" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="BitmapRegionDecoder&#9;FILE&#9;file:///Users/maqiang/Documents/GitHub/Android-SourceCode/android/graphics/BitmapRegionDecoder.java&#10;DataSetObservable&#9;PSI&#9;JAVA://android.database.DataSetObservable&#10;ArrayAdapter&#9;PSI&#9;JAVA://android.widget.ArrayAdapter&#10;AD&#9;FILE&#9;file:///Users/maqiang/Documents/GitHub/Android-SourceCode/android/widget/Adapter.java&#10;List&#9;FILE&#9;file:///Users/maqiang/Documents/GitHub/Android-SourceCode/android/widget/ListView.java&#10;View&#9;PSI&#9;JAVA://android.view.View&#10;WebViewChromiumFactoryProvider&#9;PSI&#9;JAVA://android.webview.chromium.WebViewChromiumFactoryProvider&#10;WebChromeClient&#9;PSI&#9;JAVA://android.webkit.WebChromeClient&#10;WebViewClient&#9;PSI&#9;JAVA://android.webkit.WebViewClient&#10;WebSet&#9;PSI&#9;JAVA://android.webkit.WebSettings&#10;MimeTypeMap&#9;PSI&#9;JAVA://android.webkit.MimeTypeMap&#10;WebView&#9;PSI&#9;JAVA://android.webkit.WebView&#10;Hash&#9;FILE&#9;file:///Users/maqiang/Documents/GitHub/Android-SourceCode/java/util/HashMap7.java&#10;Vector&#9;PSI&#9;JAVA://java.util.Vector&#10;Ve&#9;FILE&#9;jar:///Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/src.zip!/java.base/java/util/Vector.java&#10;HashTab&#9;PSI&#9;JAVA://java.util.Hashtable&#10;Concur&#9;PSI&#9;JAVA://java.util.concurrent.ConcurrentHashMap" />
+    <property name="SearchEverywhereHistoryKey" value="ThreadLoca&#9;PSI&#9;JAVA://java.lang.ThreadLocal&#10;Looper&#9;PSI&#9;JAVA://android.os.Looper&#10;View&#9;FILE&#9;file:///Users/maqiang/Documents/GitHub/Android-SourceCode/android/view/View.java&#10;Scroller&#9;PSI&#9;JAVA://android.widget.Scroller&#10;MotionEvent&#9;PSI&#9;JAVA://android.view.MotionEvent&#10;Activity&#9;PSI&#9;JAVA://android.app.Activity&#10;BitmapRegionDecoder&#9;FILE&#9;file:///Users/maqiang/Documents/GitHub/Android-SourceCode/android/graphics/BitmapRegionDecoder.java&#10;DataSetObservable&#9;PSI&#9;JAVA://android.database.DataSetObservable&#10;ArrayAdapter&#9;PSI&#9;JAVA://android.widget.ArrayAdapter&#10;AD&#9;FILE&#9;file:///Users/maqiang/Documents/GitHub/Android-SourceCode/android/widget/Adapter.java&#10;List&#9;FILE&#9;file:///Users/maqiang/Documents/GitHub/Android-SourceCode/android/widget/ListView.java&#10;WebViewChromiumFactoryProvider&#9;PSI&#9;JAVA://android.webview.chromium.WebViewChromiumFactoryProvider&#10;WebChromeClient&#9;PSI&#9;JAVA://android.webkit.WebChromeClient&#10;WebViewClient&#9;PSI&#9;JAVA://android.webkit.WebViewClient&#10;WebSet&#9;PSI&#9;JAVA://android.webkit.WebSettings&#10;MimeTypeMap&#9;PSI&#9;JAVA://android.webkit.MimeTypeMap&#10;WebView&#9;PSI&#9;JAVA://android.webkit.WebView&#10;Hash&#9;FILE&#9;file:///Users/maqiang/Documents/GitHub/Android-SourceCode/java/util/HashMap7.java&#10;Vector&#9;PSI&#9;JAVA://java.util.Vector&#10;Ve&#9;FILE&#9;jar:///Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/src.zip!/java.base/java/util/Vector.java&#10;HashTab&#9;PSI&#9;JAVA://java.util.Hashtable&#10;Concur&#9;PSI&#9;JAVA://java.util.concurrent.ConcurrentHashMap" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -466,8 +579,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="814" extended-state="6" />
-    <editor active="true" />
+    <frame x="74" y="23" width="1440" height="814" extended-state="0" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -478,11 +590,12 @@
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.6685315" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.6680614" />
       <window_info id="Capture Tool" order="2" />
       <window_info anchor="right" id="Designer" order="3" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.062901154" weight="0.3004292" />
-      <window_info id="Structure" order="1" sideWeight="0.93709886" side_tool="true" weight="0.25732088" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.19327731" visible="true" weight="0.1695279" />
+      <window_info id="Learn" weight="0.3297568" />
+      <window_info id="Structure" order="1" sideWeight="0.8067227" side_tool="true" visible="true" weight="0.1695279" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
       <window_info anchor="right" id="Theme Preview" order="4" />
@@ -512,62 +625,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/java/util/Stack.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-221">
-          <caret line="105" column="7" lean-forward="true" selection-start-line="105" selection-start-column="7" selection-end-line="105" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/java/awt/List.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="354" column="7" lean-forward="true" selection-start-line="354" selection-start-column="7" selection-end-line="354" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/android/app/Fragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64611">
-          <caret line="2580" column="21" selection-start-line="2580" selection-start-column="21" selection-end-line="2580" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/android/app/FragmentManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21546">
-          <caret line="876" column="16" selection-start-line="876" selection-start-column="16" selection-end-line="876" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/android/app/BackStackRecord.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4563">
-          <caret line="210" column="33" selection-start-line="210" selection-start-column="33" selection-end-line="210" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/android/support/design/widget/AppBarLayout.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="33858">
-          <caret line="1354" column="15" selection-start-line="1354" selection-start-column="15" selection-end-line="1354" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/android/support/v7/widget/RecyclerView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3240">
-          <caret line="196" selection-start-line="196" selection-end-line="196" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/android/app/AlertDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="435" column="5" lean-forward="true" selection-start-line="435" selection-start-column="5" selection-end-line="435" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/android/widget/TextView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="89">
@@ -800,13 +857,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/android/view/View.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491751">
-          <caret line="18213" column="56" selection-start-line="18213" selection-start-column="56" selection-end-line="18213" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/android/graphics/drawable/ColorDrawable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="207">
@@ -858,8 +908,90 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/android/graphics/BitmapRegionDecoder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="122" column="58" lean-forward="true" selection-start-line="122" selection-start-column="58" selection-end-line="122" selection-end-column="58" />
+        <state relative-caret-position="272">
+          <caret line="126" column="2" selection-start-line="126" selection-start-column="2" selection-end-line="126" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/view/Window.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="1518" column="7" selection-start-line="1518" selection-start-column="7" selection-end-line="1518" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/app/Activity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="2781" column="19" selection-start-line="2781" selection-start-column="19" selection-end-line="2781" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/view/MotionEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="1617" column="10" selection-start-line="1617" selection-start-column="10" selection-end-line="1617" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/view/ViewRootImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3026">
+          <caret line="2682" column="8" selection-start-line="2682" selection-start-column="8" selection-end-line="2682" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/view/View.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="3376" column="26" selection-start-line="3376" selection-start-column="26" selection-end-line="3376" selection-end-column="26" />
+          <folding>
+            <element signature="e#529718#529719#0" expanded="true" />
+            <element signature="e#529770#529771#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/widget/Scroller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="361" column="58" selection-start-line="361" selection-start-column="58" selection-end-line="361" selection-end-column="58" />
+          <folding>
+            <element signature="e#5350#5351#0" expanded="true" />
+            <element signature="e#5385#5386#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/src.zip!/java.base/java/lang/ThreadLocal.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="893">
+          <caret line="73" column="13" selection-start-line="73" selection-start-column="13" selection-end-line="73" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java/lang/ThreadLocal.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2315">
+          <caret line="171" column="15" selection-start-line="171" selection-start-column="15" selection-end-line="171" selection-end-column="15" />
+          <folding>
+            <element signature="e#4309#4310#0" expanded="true" />
+            <element signature="e#4336#4337#0" expanded="true" />
+            <element signature="e#8486#8487#0" expanded="true" />
+            <element signature="e#8538#8539#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/os/Looper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="55">
+          <caret line="87" column="12" selection-start-line="87" selection-start-column="12" selection-end-line="87" selection-end-column="12" />
+          <folding>
+            <element signature="e#2432#2440#0" expanded="true" />
+            <element signature="e#2964#2965#0" expanded="true" />
+            <element signature="e#2993#2994#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

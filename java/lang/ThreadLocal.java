@@ -67,6 +67,8 @@ import java.util.function.Supplier;
  * instance is accessible; after a thread goes away, all of its copies of
  * thread-local instances are subject to garbage collection (unless other
  * references to these copies exist).
+ * 只要线程处于活动状态且{@code ThreadLocal}实例可访问，每个线程都会保存对其线程局部变量副本的隐式引用;
+ * 在一个线程消失之后，它的所有线程局部实例副本都要进行垃圾收集（除非存在对这些副本的其他引用）。
  *
  * @author  Josh Bloch and Doug Lea
  * @since   1.2

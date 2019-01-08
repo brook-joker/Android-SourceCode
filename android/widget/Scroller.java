@@ -90,8 +90,11 @@ public class Scroller  {
 
     private float mFlingFriction = ViewConfiguration.getScrollFriction();
 
+    //默认的滚动动画执行时间
     private static final int DEFAULT_DURATION = 250;
+    //正常滚动模式
     private static final int SCROLL_MODE = 0;
+    //抛掷模式.
     private static final int FLING_MODE = 1;
 
     private static float DECELERATION_RATE = (float) (Math.log(0.78) / Math.log(0.9));
@@ -146,6 +149,7 @@ public class Scroller  {
 
     /**
      * Create a Scroller with the default duration and interpolator.
+     * 使用默认的滑动时间和插值器构造Scroller.
      */
     public Scroller(Context context) {
         this(context, null);
@@ -155,6 +159,7 @@ public class Scroller  {
      * Create a Scroller with the specified interpolator. If the interpolator is
      * null, the default (viscous) interpolator will be used. "Flywheel" behavior will
      * be in effect for apps targeting Honeycomb or newer.
+     * 使用给定的插值器来构造Scroller.
      */
     public Scroller(Context context, Interpolator interpolator) {
         this(context, interpolator,
@@ -165,16 +170,22 @@ public class Scroller  {
      * Create a Scroller with the specified interpolator. If the interpolator is
      * null, the default (viscous) interpolator will be used. Specify whether or
      * not to support progressive "flywheel" behavior in flinging.
+     * 使用给定的插值器来构造Scroller.Android3.0以上的版本支持"flywheel"的行为.
      */
     public Scroller(Context context, Interpolator interpolator, boolean flywheel) {
+        // 设置滑动停止标识位为true
         mFinished = true;
+        // 构造插值器
         if (interpolator == null) {
             mInterpolator = new ViscousFluidInterpolator();
         } else {
             mInterpolator = interpolator;
         }
+        // 获取屏幕的密度(每英寸的像素数)
         mPpi = context.getResources().getDisplayMetrics().density * 160.0f;
+        // 计算摩擦力
         mDeceleration = computeDeceleration(ViewConfiguration.getScrollFriction());
+        // 标记是否支持flying模式
         mFlywheel = flywheel;
 
         mPhysicalCoeff = computeDeceleration(0.84f); // look and feel tuning
@@ -297,19 +308,23 @@ public class Scroller  {
      * the animation is not yet finished.
      */ 
     public boolean computeScrollOffset() {
+        // 如果已经结束,直接返回false.
         if (mFinished) {
             return false;
         }
-
+        // 计算已经度过的时间.
         int timePassed = (int)(AnimationUtils.currentAnimationTimeMillis() - mStartTime);
-    
+
         if (timePassed < mDuration) {
+            // 处理滚动模式
             switch (mMode) {
+            //正常滑动模式
             case SCROLL_MODE:
                 final float x = mInterpolator.getInterpolation(timePassed * mDurationReciprocal);
                 mCurrX = mStartX + Math.round(x * mDeltaX);
                 mCurrY = mStartY + Math.round(x * mDeltaY);
                 break;
+            //抛掷模式
             case FLING_MODE:
                 final float t = (float) timePassed / mDuration;
                 final int index = (int) (NB_SAMPLES * t);
@@ -344,6 +359,7 @@ public class Scroller  {
             }
         }
         else {
+            // 当时间结束时,直接将x和y坐标置为终止状态的x和y坐标,同时将终止标志位置为true.
             mCurrX = mFinalX;
             mCurrY = mFinalY;
             mFinished = true;
@@ -355,6 +371,7 @@ public class Scroller  {
      * Start scrolling by providing a starting point and the distance to travel.
      * The scroll will use the default value of 250 milliseconds for the
      * duration.
+     * 以提供的起始点和将要滑动的距离开始滚动。滚动会使用缺省值250ms作为持续时间。
      * 
      * @param startX Starting horizontal scroll offset in pixels. Positive
      *        numbers will scroll the content to the left.

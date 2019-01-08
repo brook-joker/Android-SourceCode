@@ -3058,9 +3058,11 @@ public class Activity extends ContextThemeWrapper
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             onUserInteraction();
         }
+        //如果是Dialog或者PhoneWindow的话 那么事件交由它们处理
         if (getWindow().superDispatchTouchEvent(ev)) {
             return true;
         }
+        //否在向下进行分发
         return onTouchEvent(ev);
     }
 

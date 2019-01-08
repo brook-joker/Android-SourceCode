@@ -1515,6 +1515,8 @@ public abstract class Window {
      * Used by custom windows, such as Dialog, to pass the key shortcut press event
      * further down the view hierarchy. Application developers should
      * not need to implement or call this.
+     * 由自定义窗口（如Dialog）用于在视图层次结构中向下传递快捷键按键事件。
+     * 应用程序开发人员不应该实现或调用它。
      *
      */
     public abstract boolean superDispatchKeyShortcutEvent(KeyEvent event);

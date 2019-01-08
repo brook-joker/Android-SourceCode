@@ -26,6 +26,8 @@ import android.util.SparseArray;
  * Object used to report movement (mouse, pen, finger, trackball) events.
  * Motion events may hold either absolute or relative movements and other data,
  * depending on the type of device.
+ * 用于报告移动（鼠标，笔，手指，轨迹球）事件的对象。
+ * 运动事件可能包含绝对或相对运动以及其他数据，
  *
  * <h3>Overview</h3>
  * <p>

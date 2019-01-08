@@ -3366,6 +3366,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
     /**
      * The offset, in pixels, by which the content of this view is scrolled
      * horizontally.
+     * 以像素为单位的偏移量，通过该偏移量水平滚动此视图的内容
      * {@hide}
      */
     @ViewDebug.ExportedProperty(category = "scrolling")
@@ -3373,6 +3374,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
     /**
      * The offset, in pixels, by which the content of this view is scrolled
      * vertically.
+     * 以像素为单位的偏移量，通过该偏移量垂直滚动此视图的内容
      * {@hide}
      */
     @ViewDebug.ExportedProperty(category = "scrolling")
