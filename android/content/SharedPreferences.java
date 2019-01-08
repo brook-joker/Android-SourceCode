@@ -177,16 +177,20 @@ public interface SharedPreferences {
          * {@link SharedPreferences} object it is editing.  This atomically
          * performs the requested modifications, replacing whatever is currently
          * in the SharedPreferences.
-         *
+         * 将您的首选项更改从此编辑器返回到它正在编辑的{@link SharedPreferences}对象。
+         * 这自动执行所请求的修改，替换任何内容目前在SharedPreferences中。
          * <p>Note that when two editors are modifying preferences at the same
          * time, the last one to call commit wins.
+         * 请注意，当两个编辑器同时修改首选项时，最后一个调用commit会获胜。
          *
          * <p>If you don't care about the return value and you're
          * using this from your application's main thread, consider
          * using {@link #apply} instead.
+         * 如果您不关心返回值并且正在从应用程序的主线程中使用它，请考虑使用{@link #apply}。
          *
          * @return Returns true if the new values were successfully written
          * to persistent storage.
+         * 如果新值已成功写入持久存储，则返回true。
          */
         boolean commit();
 
@@ -198,7 +202,13 @@ public interface SharedPreferences {
          *
          * <p>Note that when two editors are modifying preferences at the same
          * time, the last one to call apply wins.
+         * 请注意，当两个编辑者同时修改首选项时时间，最后一个调用apply的获胜。
          *
+         *
+         * commit是将首选项写出来同步到持久存储
+         * apply是将其更改提交到内存中，然后SP立即启动异步提交到磁盘，你将不会收到任何失败通知。
+         * 如果{@link SharedPreferences}上的另一个编辑器定期{@link #commit}，
+         * 而{@link #apply}仍然未完成，则{@link #commit}将阻止，直到所有异步提交完成以及承诺自己。
          * <p>Unlike {@link #commit}, which writes its preferences out
          * to persistent storage synchronously, {@link #apply}
          * commits its changes to the in-memory
@@ -210,6 +220,7 @@ public interface SharedPreferences {
          * {@link #commit} will block until all async commits are
          * completed as well as the commit itself.
          *
+         * <p>由于{@link SharedPreferences}实例是进程中的单例，如果您已经忽略了返回值，则可以安全地将{@link #commit}的任何实例替换为{@link #apply}。
          * <p>As {@link SharedPreferences} instances are singletons within
          * a process, it's safe to replace any instance of {@link #commit} with
          * {@link #apply} if you were already ignoring the return value.

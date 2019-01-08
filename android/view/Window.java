@@ -53,6 +53,9 @@ import java.util.List;
  * instance of this class should be used as the top-level view added to the
  * window manager. It provides standard UI policies such as a background, title
  * area, default key processing, etc.
+ * 顶级窗口外观和行为策略的抽象基类。 
+ * 应该将此类的实例用作添加到窗口管理器的顶级视图。
+ * 它提供标准的UI策略，例如背景，标题区域，默认密钥处理等。
  *
  * <p>The only existing implementation of this abstract class is
  * android.view.PhoneWindow, which you should instantiate when needing a

@@ -91,11 +91,12 @@ public final class MultiDex {
      */
     public static void install(Context context) {
         Log.i(TAG, "install");
+        //检测当前系统是否支持multdex
         if (IS_VM_MULTIDEX_CAPABLE) {
             Log.i(TAG, "VM has multidex support, MultiDex support library is disabled.");
             return;
         }
-
+        //Multdex只支持到1.6
         if (Build.VERSION.SDK_INT < MIN_SDK_VERSION) {
             throw new RuntimeException("Multi dex installation failed. SDK " + Build.VERSION.SDK_INT
                     + " is unsupported. Min SDK version is " + MIN_SDK_VERSION + ".");
@@ -109,12 +110,15 @@ public final class MultiDex {
             }
 
             synchronized (installedApk) {
+                //sourceDir对应于data/app/<package-name>.apk
                 String apkPath = applicationInfo.sourceDir;
+                //如果已经install过，直接退出
                 if (installedApk.contains(apkPath)) {
                     return;
                 }
                 installedApk.add(apkPath);
 
+                // MultiDex 最高只支持到20(Android 4.4W)，更高的版本不能保证正常工作
                 if (Build.VERSION.SDK_INT > MAX_SUPPORTED_SDK_VERSION) {
                     Log.w(TAG, "MultiDex is not guaranteed to work in SDK version "
                             + Build.VERSION.SDK_INT + ": SDK version higher than "
@@ -128,6 +132,10 @@ public final class MultiDex {
                  * dalvik.system.BaseDexClassLoader. We modify its
                  * dalvik.system.DexPathList pathList field to append additional DEX
                  * file entries.
+                 */
+                /*
+                 * 待Patch的class loader应该是BaseDexClassLoaderd的子类，
+                 * MultiDex主要通过修改pathList字段来添加更多的dex
                  */
                 ClassLoader loader;
                 try {
@@ -156,16 +164,23 @@ public final class MultiDex {
                       + "continuing without cleaning.", t);
                 }
 
+                // MultiDex的二级dex文件将存放在 /data/data/<package-name>/secondary-dexes 下
                 File dexDir = getDexDir(context, applicationInfo);
+                // 从apk中查找并解压二级dex文件到/data/data/<package-name>/secondary-dexes
                 List<File> files = MultiDexExtractor.load(context, applicationInfo, dexDir, false);
+                // 检查dex压缩文件的完整性
                 if (checkValidZipFiles(files)) {
+                    // 开始安装dex
                     installSecondaryDexes(loader, dexDir, files);
                 } else {
                     Log.w(TAG, "Files were not valid zip files.  Forcing a reload.");
+
+                    // 第一次检查失败，MultiDex会尽责的再检查一次
                     // Try again, but this time force a reload of the zip file.
                     files = MultiDexExtractor.load(context, applicationInfo, dexDir, true);
 
                     if (checkValidZipFiles(files)) {
+                        // 开始安装dex
                         installSecondaryDexes(loader, dexDir, files);
                     } else {
                         // Second time didn't work, give up

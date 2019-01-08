@@ -137,12 +137,15 @@ class ContextImpl extends Context {
 
     /**
      * Map from package name, to preference name, to cached preferences.
+     * 以包名为key，二级key是以sp文件，以SharedPreferencesImp为value的嵌套map结构，
+     * 这里sSharedPrefsCache是静态成员变量，每个进程时保存唯一一份,且由ContextImpl.class锁保护
      */
     @GuardedBy("ContextImpl.class")
     private static ArrayMap<String, ArrayMap<File, SharedPreferencesImpl>> sSharedPrefsCache;
 
     /**
      * Map from preference name to generated path.
+     * 以文件名为key, 具体文件为value的map结构
      */
     @GuardedBy("ContextImpl.class")
     private ArrayMap<String, File> mSharedPrefsPaths;
@@ -175,6 +178,7 @@ class ContextImpl extends Context {
 
     @GuardedBy("mSync")
     private File mDatabasesDir;
+    //SP所在目录, 是指/data/data/packageName/shared_prefs/
     @GuardedBy("mSync")
     private File mPreferencesDir;
     @GuardedBy("mSync")
@@ -329,6 +333,7 @@ class ContextImpl extends Context {
         // At least one application in the world actually passes in a null
         // name.  This happened to work because when we generated the file name
         // we would stringify it to "null.xml".  Nice.
+        // 在小于4.4时支持name=null
         if (mPackageInfo.getApplicationInfo().targetSdkVersion <
                 Build.VERSION_CODES.KITKAT) {
             if (name == null) {
@@ -341,8 +346,10 @@ class ContextImpl extends Context {
             if (mSharedPrefsPaths == null) {
                 mSharedPrefsPaths = new ArrayMap<>();
             }
+               //先从mSharedPrefsPaths查询是否存在相应文件
             file = mSharedPrefsPaths.get(name);
             if (file == null) {
+                 //如果文件不存在, 则创建新的文件
                 file = getSharedPreferencesPath(name);
                 mSharedPrefsPaths.put(name, file);
             }
@@ -355,14 +362,20 @@ class ContextImpl extends Context {
         checkMode(mode);
         SharedPreferencesImpl sp;
         synchronized (ContextImpl.class) {
+            //获取进程缓存
             final ArrayMap<File, SharedPreferencesImpl> cache = getSharedPreferencesCacheLocked();
+            //取出对应的sp
             sp = cache.get(file);
             if (sp == null) {
+                //创建sp
                 sp = new SharedPreferencesImpl(file, mode);
                 cache.put(file, sp);
                 return sp;
             }
         }
+        //指定多进程模式，则当文件被其他进程改变时，则会重新加载
+        //MODE_MULTI_PROCESS这种多进程的方式也是Google不推荐的方式, 后续同样会不再支持, 强烈建议App不用使用该方式来实现多个进程实现 同一个SP文件.
+        //当设置MODE_MULTI_PROCESS模式, 则每次getSharedPreferences过程, 会检查SP文件上次修改时间和文件大小, 一旦所有修改则会重新从磁盘加载文件.
         if ((mode & Context.MODE_MULTI_PROCESS) != 0 ||
             getApplicationInfo().targetSdkVersion < android.os.Build.VERSION_CODES.HONEYCOMB) {
             // If somebody else (some other process) changed the prefs
@@ -464,6 +477,10 @@ class ContextImpl extends Context {
     private File getPreferencesDir() {
         synchronized (mSync) {
             if (mPreferencesDir == null) {
+                //创建目录/data/data/package name/shared_prefs/
+                //先从mSharedPrefsPaths查询是否存在相应文件;
+                //如果文件不存在, 则创建新的xml文件; 如果目录也不存在, 则先创建目录创建目录/data/data/package name/shared_prefs/
+                //其中mSharedPrefsPaths用于记录所有的SP文件, 是以文件名为key的Map数据结构.
                 mPreferencesDir = new File(getDataDir(), "shared_prefs");
             }
             return ensurePrivateDirExists(mPreferencesDir);
@@ -2130,6 +2147,7 @@ class ContextImpl extends Context {
     }
 
     private void checkMode(int mode) {
+        //Android N以后不允许声明MODE_WORLD_READABLE/MODE_WORLD_WRITEABLE模式 否则会抛异常
         if (getApplicationInfo().targetSdkVersion >= Build.VERSION_CODES.N) {
             if ((mode & MODE_WORLD_READABLE) != 0) {
                 throw new SecurityException("MODE_WORLD_READABLE no longer supported");

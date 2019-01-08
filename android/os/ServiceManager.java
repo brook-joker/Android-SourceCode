@@ -28,6 +28,7 @@ public final class ServiceManager {
     private static final String TAG = "ServiceManager";
 
     private static IServiceManager sServiceManager;
+    //二次缓存
     private static HashMap<String, IBinder> sCache = new HashMap<String, IBinder>();
 
     private static IServiceManager getIServiceManager() {

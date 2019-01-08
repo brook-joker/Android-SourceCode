@@ -412,11 +412,15 @@ public abstract class Context {
      * current process.  This generally should only be used if you need a
      * Context whose lifecycle is separate from the current context, that is
      * tied to the lifetime of the process rather than the current component.
+     * 返回当前进程的单个全局Appcaliton对象的上下文                                                                     
+     * 这通常只应在需要生命周期与当前上下文分离的上下文时使用，该上下文与进程的生命周期而不是当前组件相关联。
      *
+     * 考虑到与广播和IntentFilter交互
      * <p>Consider for example how this interacts with
      * {@link #registerReceiver(BroadcastReceiver, IntentFilter)}:
      * <ul>
-     * <li> <p>If used from an Activity context, the receiver is being registered
+     * <li> <p>
+     * If used from an Activity context, the receiver is being registered
      * within that activity.  This means that you are expected to unregister
      * before the activity is done being destroyed; in fact if you do not do
      * so, the framework will clean up your leaked registration as it removes
@@ -430,6 +434,12 @@ public abstract class Context {
      * is associated with static data, not a particular component.  However
      * using the ApplicationContext elsewhere can easily lead to serious leaks
      * if you forget to unregister, unbind, etc.
+     * 如果从Activity上下文使用，则接收者正在该活动中注册。
+     * 这意味着您需要在活动被销毁之前取消注册; 事实上，如果你不这样做，框架将清除你泄露的注册，因为它删除了活动并记录错误。
+     * 因此，如果您使用Activity上下文来注册一个静态的接收者（进程的全局，而不是与Activity实例关联），那么无论您使用的活动被销毁的哪个点，都将删除该注册。
+     * 如果从此处返回的上下文中使用，则接收器将使用与您的应用程序关联的全局状态进行注册。
+     * 因此，它永远不会为您注册。 如果接收器与静态数据相关联，而不是特定组件，则这是必要的。
+     * 但是，在其他地方使用ApplicationContext很容易导致严重泄漏
      * </ul>
      */
     public abstract Context getApplicationContext();
