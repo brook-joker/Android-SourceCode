@@ -56,6 +56,9 @@ import dalvik.system.VMRuntime;
  * {@link Parcelable} interface), and references to live {@link IBinder}
  * objects that will result in the other side receiving a proxy IBinder
  * connected with the original IBinder in the Parcel.
+ * 可以通过IBinder发送的消息（数据和对象引用）的容器。
+ * Parcel可以包含将在IPC的另一侧展开的展平数据（使用此处用于编写特定类型的各种方法，或通用{@link Parcelable}接口），
+ * 以及对实时{@link IBinder}对象的引用 这将导致另一方接收与包裹中的原始IBinder连接的代理IBinder。
  *
  * <p class="note">Parcel is <strong>not</strong> a general-purpose
  * serialization mechanism.  This class (and the corresponding

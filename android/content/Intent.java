@@ -8703,9 +8703,13 @@ public class Intent implements Parcelable, Cloneable {
     }
 
     public void readFromParcel(Parcel in) {
+        //恢复action属性
         setAction(in.readString());
+        //恢复Data属性
         mData = Uri.CREATOR.createFromParcel(in);
+        //Type属性
         mType = in.readString();
+        //Flag属性,启动模式
         mFlags = in.readInt();
         mPackage = in.readString();
         mComponent = ComponentName.readFromParcel(in);
@@ -8733,6 +8737,7 @@ public class Intent implements Parcelable, Cloneable {
             mClipData = new ClipData(in);
         }
         mContentUserHint = in.readInt();
+        //传递的数据
         mExtras = in.readBundle();
     }
 

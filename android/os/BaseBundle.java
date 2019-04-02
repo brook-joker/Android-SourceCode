@@ -227,6 +227,7 @@ public class BaseBundle {
      */
     /* package */ synchronized void unparcel() {
         synchronized (this) {
+            //没有Parcel数据，不创建mMap对象，直接返回
             final Parcel parcelledData = mParcelledData;
             if (parcelledData == null) {
                 if (DEBUG) Log.d(TAG, "unparcel "
@@ -240,6 +241,7 @@ public class BaseBundle {
                         + "clobber all data inside!", new Throwable());
             }
 
+            //mParcelledData为默认的EMPTY_PARCEL，创建或清理mMap对象，不解析数据，直接返回
             if (isEmptyParcel()) {
                 if (DEBUG) Log.d(TAG, "unparcel "
                         + Integer.toHexString(System.identityHashCode(this)) + ": empty");
@@ -252,6 +254,7 @@ public class BaseBundle {
                 return;
             }
 
+            //解析Parcel数据，或取Parcel含有多少键值对数据
             int N = parcelledData.readInt();
             if (DEBUG) Log.d(TAG, "unparcel " + Integer.toHexString(System.identityHashCode(this))
                     + ": reading " + N + " maps");
@@ -266,6 +269,7 @@ public class BaseBundle {
                 map.ensureCapacity(N);
             }
             try {
+                //将待反序列化的数据根据当前的classLoader反序列化之后存入map中
                 parcelledData.readArrayMapInternal(map, N, mClassLoader);
             } catch (BadParcelableException e) {
                 if (sShouldDefuse) {
@@ -1385,6 +1389,7 @@ public class BaseBundle {
         synchronized (this) {
             parcelledData = mParcelledData;
         }
+        //默认parcelledDat == null
         if (parcelledData != null) {
             if (isEmptyParcel()) {
                 parcel.writeInt(0);
@@ -1405,6 +1410,7 @@ public class BaseBundle {
             parcel.writeInt(BUNDLE_MAGIC);
 
             int startPos = parcel.dataPosition();
+            //核心代码，mMap就是上面一开始保存数据的对象，也就是所有需要传输的数据都在该对象中。又返回到了Parcel的方法中
             parcel.writeArrayMapInternal(mMap);
             int endPos = parcel.dataPosition();
 
@@ -1450,11 +1456,12 @@ public class BaseBundle {
 
         Parcel p = Parcel.obtain();
         p.setDataPosition(0);
+        //通过传入的Parcel对象生成一个新的Parcel对象，也就是截取Parcel的数据组成新的Parcel对象。
         p.appendFrom(parcel, offset, length);
         if (DEBUG) Log.d(TAG, "Retrieving "  + Integer.toHexString(System.identityHashCode(this))
                 + ": " + length + " bundle bytes starting at " + offset);
         p.setDataPosition(0);
-
+        //待反序列化的数据不再为null 然后把新生成的Parcel赋值给Bundle。
         mParcelledData = p;
     }
 }

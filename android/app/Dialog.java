@@ -506,7 +506,7 @@ public class Dialog implements DialogInterface, Window.Callback,
     /**
      * Set the screen content from a layout resource.  The resource will be
      * inflated, adding all top-level views to the screen.
-     * 
+     *
      * @param layoutResID Resource ID to be inflated.
      */
     public void setContentView(@LayoutRes int layoutResID) {
