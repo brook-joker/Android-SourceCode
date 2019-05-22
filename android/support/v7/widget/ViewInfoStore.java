@@ -223,30 +223,39 @@ class ViewInfoStore {
             final InfoRecord record = mLayoutHolderMap.removeAt(index);
             if ((record.flags & FLAG_APPEAR_AND_DISAPPEAR) == FLAG_APPEAR_AND_DISAPPEAR) {
                 // Appeared then disappeared. Not useful for animations.
+                //出现然后消失了。 对动画没用。
                 callback.unused(viewHolder);
             } else if ((record.flags & FLAG_DISAPPEARED) != 0) {
                 // Set as "disappeared" by the LayoutManager (addDisappearingView)
+                //由LayoutManager设置为“消失”（addDisappearingView）
                 if (record.preInfo == null) {
                     // similar to appear disappear but happened between different layout passes.
                     // this can happen when the layout manager is using auto-measure
+                    //类似于显示消失但发生在不同的布局传递之间。
+                    // 当布局管理器使用自动测量时，可能会发生这种情况
                     callback.unused(viewHolder);
                 } else {
                     callback.processDisappeared(viewHolder, record.preInfo, record.postInfo);
                 }
             } else if ((record.flags & FLAG_APPEAR_PRE_AND_POST) == FLAG_APPEAR_PRE_AND_POST) {
                 // Appeared in the layout but not in the adapter (e.g. entered the viewport)
+                // 出现在视图中 但不在适配器里面
                 callback.processAppeared(viewHolder, record.preInfo, record.postInfo);
             } else if ((record.flags & FLAG_PRE_AND_POST) == FLAG_PRE_AND_POST) {
                 // Persistent in both passes. Animate persistence
+                // 持续执行动画
                 callback.processPersistent(viewHolder, record.preInfo, record.postInfo);
             } else if ((record.flags & FLAG_PRE) != 0) {
                 // Was in pre-layout, never been added to post layout
+                // 处于预布局 从来没有被添加到布局后
                 callback.processDisappeared(viewHolder, record.preInfo, null);
             } else if ((record.flags & FLAG_POST) != 0) {
                 // Was not in pre-layout, been added to post layout
+                // 不处于预布局 被添加到布局后
                 callback.processAppeared(viewHolder, record.preInfo, record.postInfo);
             } else if ((record.flags & FLAG_APPEAR) != 0) {
                 // Scrap view. RecyclerView will handle removing/recycling this.
+                // 废料视图。 RecyclerView将处理删除/回收此问题。
             } else if (DEBUG) {
                 throw new IllegalStateException("record without any reasonable flag combination:/");
             }

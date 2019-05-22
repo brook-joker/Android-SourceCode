@@ -7054,7 +7054,6 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
 
         BoringLayout.Metrics boring = UNKNOWN_BORING;
         BoringLayout.Metrics hintBoring = UNKNOWN_BORING;
-
         if (mTextDir == null) {
             mTextDir = getTextDirectionHeuristic();
         }
@@ -7186,6 +7185,7 @@ public class TextView extends View implements ViewTreeObserver.OnPreDrawListener
             height = heightSize;
             mDesiredHeightAtMeasure = -1;
         } else {
+            //如果父容器是ScollView 那么就会走到这里
             int desired = getDesiredHeight();
 
             height = desired;

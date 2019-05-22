@@ -16,25 +16,6 @@
 
 package android.view.animation;
 
-import android.content.pm.ActivityInfo.Config;
-
-/**
- * An abstract class which is extended by default interpolators.
- * 由默认插值器扩展的抽象类。
- */
-abstract public class BaseInterpolator implements Interpolator {
-    private @Config int mChangingConfiguration;
-    /**
-     * @hide
-     */
-    public @Config int getChangingConfiguration() {
-        return mChangingConfiguration;
-    }
-
-    /**
-     * @hide
-     */
-    void setChangingConfiguration(@Config int changingConfiguration) {
-        mChangingConfiguration = changingConfiguration;
-    }
+public interface NativeInterpolatorFactory {
+    long createNativeInterpolator();
 }

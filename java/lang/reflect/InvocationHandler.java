@@ -88,6 +88,11 @@ public interface InvocationHandler {
      * exception that was thrown by this method will be thrown by the
      * method invocation on the proxy instance.
      *
+     *
+     * @param proxy 被代理的实例对象
+     * @param method 被调用的方法对象
+     * @param args 调用方法（method）的方法参数
+     *
      * @see     UndeclaredThrowableException
      */
     public Object invoke(Object proxy, Method method, Object[] args)

@@ -104,6 +104,7 @@ public class DefaultItemAnimator extends SimpleItemAnimator {
             return;
         }
         // First, remove stuff
+        // 先执行remove动画
         for (ViewHolder holder : mPendingRemovals) {
             animateRemoveImpl(holder);
         }
@@ -118,6 +119,7 @@ public class DefaultItemAnimator extends SimpleItemAnimator {
                 @Override
                 public void run() {
                     for (MoveInfo moveInfo : moves) {
+                        //执行移动动画
                         animateMoveImpl(moveInfo.holder, moveInfo.fromX, moveInfo.fromY,
                                 moveInfo.toX, moveInfo.toY);
                     }
@@ -133,6 +135,7 @@ public class DefaultItemAnimator extends SimpleItemAnimator {
             }
         }
         // Next, change stuff, to run in parallel with move animations
+        // 在执行move的同时并行执行change动画
         if (changesPending) {
             final ArrayList<ChangeInfo> changes = new ArrayList<>();
             changes.addAll(mPendingChanges);
@@ -156,6 +159,8 @@ public class DefaultItemAnimator extends SimpleItemAnimator {
             }
         }
         // Next, add stuff
+        // 最后执行add动画
+
         if (additionsPending) {
             final ArrayList<ViewHolder> additions = new ArrayList<>();
             additions.addAll(mPendingAdditions);
@@ -216,6 +221,7 @@ public class DefaultItemAnimator extends SimpleItemAnimator {
     @Override
     public boolean animateAdd(final ViewHolder holder) {
         resetAnimation(holder);
+        //每个View的初始化状态都是设置透明度为0不可见
         ViewCompat.setAlpha(holder.itemView, 0);
         mPendingAdditions.add(holder);
         return true;

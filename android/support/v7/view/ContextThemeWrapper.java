@@ -29,6 +29,7 @@ import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 /**
  * A ContextWrapper that allows you to modify the theme from what is in the
  * wrapped context.
+ * 允许修改场景的主题
  *
  * @hide
  */

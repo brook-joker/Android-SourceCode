@@ -133,18 +133,26 @@ public class ConcurrentHashMap7<K, V> extends AbstractMap<K, V>
     /**
      * The default initial capacity for this table,
      * used when not otherwise specified in a constructor.
+     * 散列映射表的默认初始容量为 16，即初始默认为 16 个桶
+     * 在构造函数中没有指定这个参数时，使用本参数
      */
     static final int DEFAULT_INITIAL_CAPACITY = 16;
 
     /**
      * The default load factor for this table, used when not
      * otherwise specified in a constructor.
+     * 散列映射表的默认装载因子为 0.75，该值是 table 中包含的 HashEntry 元素的个数与table 数组长度的比值
+     * 当 table 中包含的 HashEntry 元素的个数超过了 table 数组的长度与装载因子的乘积时，将触发 再散列
+     * 在构造函数中没有指定这个参数时，使用本参数
+     *
      */
     static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
     /**
      * The default concurrency level for this table, used when not
      * otherwise specified in a constructor.
+     * 散列表的默认并发级别为 16。该值表示当前更新线程的估计数
+     * 在构造函数中没有指定这个参数时，使用本参数
      */
     static final int DEFAULT_CONCURRENCY_LEVEL = 16;
 
@@ -239,17 +247,20 @@ public class ConcurrentHashMap7<K, V> extends AbstractMap<K, V>
     /**
      * Mask value for indexing into segments. The upper bits of a
      * key's hash code are used to choose the segment.
+     * segments 的掩码值
+     * key 的散列码的高位用来选择具体的 segment
      */
     final int segmentMask;
 
     /**
      * Shift value for indexing within segments.
+     * 偏移量
      */
     final int segmentShift;
 
     /**
      * The segments, each of which is a specialized hash table.
-     * 保存各个分段
+     * 由 Segment 对象组成的数组 保存各个分段
      */
     final Segment<K, V>[] segments;
 
@@ -392,12 +403,19 @@ public class ConcurrentHashMap7<K, V> extends AbstractMap<K, V>
         /**
          * The per-segment table. Elements are accessed via
          * entryAt/setEntryAt providing volatile semantics.
+         * table 是由 HashEntry 对象组成的数组
+         * 如果散列时发生碰撞,碰撞的 HashEntry对象就以链表的形式链接成一个链表
+         * table 数组的数组成员代表散列映射表的一个桶
+         * 每个 table 守护整个 ConcurrentHashMap 包含桶总数的一部分
+         * 如果并发级别为 16，table 则守护 ConcurrentHashMap 包含的桶总数的 1/16
          */
         transient volatile HashEntry<K, V>[] table;
 
         /**
          * The number of elements. Accessed only either within locks
          * or among other volatile reads that maintain visibility.
+         * 在本 segment 范围内，包含的 HashEntry 元素的个数
+         * 该变量被声明为 volatile 型
          */
         transient int count;
 
@@ -407,6 +425,8 @@ public class ConcurrentHashMap7<K, V> extends AbstractMap<K, V>
          * sufficient accuracy for stability checks in CHM isEmpty()
          * and size() methods.  Accessed only either within locks or
          * among other volatile reads that maintain visibility.
+         *
+         * table 被更新的次数
          */
         transient int modCount;
 
@@ -414,6 +434,8 @@ public class ConcurrentHashMap7<K, V> extends AbstractMap<K, V>
          * The table is rehashed when its size exceeds this threshold.
          * (The value of this field is always <tt>(int)(capacity *
          * loadFactor)</tt>.)
+         *
+         * 当 table 中的包含的 HashEntry 元素的个数超过本变量值时，触发 table 的再散列
          */
         transient int threshold;
 
@@ -422,6 +444,7 @@ public class ConcurrentHashMap7<K, V> extends AbstractMap<K, V>
          * is same for all segments, it is replicated to avoid needing
          * links to outer object.
          *
+         * 装载因子
          * @serial
          */
         final float loadFactor;
@@ -433,7 +456,7 @@ public class ConcurrentHashMap7<K, V> extends AbstractMap<K, V>
         }
 
         final V put(K key, int hash, V value, boolean onlyIfAbsent) {
-            // 在往该 segment 写入前，需要先获取该 segment 的独占锁
+            //    `在往该 segment 写入前，需要先获取该 segment 的独占锁
             //    先看主流程，后面还会具体介绍这部分内容
             HashEntry<K, V> node = tryLock() ? null :
                     scanAndLockForPut(key, hash, value);
@@ -890,7 +913,7 @@ public class ConcurrentHashMap7<K, V> extends AbstractMap<K, V>
         // 并创建数组的第一个元素 segment[0]
         Segment<K, V> s0 =
                 new Segment<K, V>(loadFactor, (int) (cap * loadFactor),
-                        (HashEntry<K, V>[]) new HashEntry[cap]);
+                        (HashEntry<K, V>[]) new HashEntry[]);
         Segment<K, V>[] ss = (Segment<K, V>[]) new Segment[ssize];
         // 往数组写入 segment[0]
         UNSAFE.putOrderedObject(ss, SBASE, s0); // ordered write of segments[0]

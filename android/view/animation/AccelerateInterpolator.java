@@ -37,14 +37,17 @@ public class AccelerateInterpolator extends BaseInterpolator implements NativeIn
     private final float mFactor;
     private final double mDoubleFactor;
 
+    //无参数的构造方法, factor默认为1
     public AccelerateInterpolator() {
         mFactor = 1.0f;
         mDoubleFactor = 2.0;
     }
 
     /**
-     * Constructor
+     * Constructor 有参数的构造方法
      *
+     *  factor要放宽动画的程度。 将因子设置为1.0f会产生y = x ^ 2抛物线。
+     *  增加因子高于1.0f夸大了缓和效果（即，它开始更慢并且更快地结束）
      * @param factor Degree to which the animation should be eased. Seting
      *        factor to 1.0f produces a y=x^2 parabola. Increasing factor above
      *        1.0f  exaggerates the ease-in effect (i.e., it starts even

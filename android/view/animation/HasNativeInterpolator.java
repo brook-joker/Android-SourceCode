@@ -16,25 +16,22 @@
 
 package android.view.animation;
 
-import android.content.pm.ActivityInfo.Config;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * An abstract class which is extended by default interpolators.
- * 由默认插值器扩展的抽象类。
+ * This is a class annotation that signals that it is safe to create
+ * a native interpolator counterpart via {@link NativeInterpolatorFactory}
+ *
+ * The idea here is to prevent subclasses of interpolators from being treated as a
+ * NativeInterpolatorFactory, and instead have them fall back to the LUT & LERP
+ * method like a custom interpolator.
+ *
+ * @hide
  */
-abstract public class BaseInterpolator implements Interpolator {
-    private @Config int mChangingConfiguration;
-    /**
-     * @hide
-     */
-    public @Config int getChangingConfiguration() {
-        return mChangingConfiguration;
-    }
-
-    /**
-     * @hide
-     */
-    void setChangingConfiguration(@Config int changingConfiguration) {
-        mChangingConfiguration = changingConfiguration;
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+public @interface HasNativeInterpolator {
 }

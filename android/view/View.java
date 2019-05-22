@@ -22261,6 +22261,8 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      */
     public static class MeasureSpec {
         private static final int MODE_SHIFT = 30;
+        //3左右30位
+        //1100 0000 0000 0000 0000 0000 0000 0000
         private static final int MODE_MASK  = 0x3 << MODE_SHIFT;
 
         /** @hide */
@@ -22271,6 +22273,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
         /**
          * Measure specification mode: The parent has not imposed any constraint
          * on the child. It can be whatever size it wants.
+         * 父View不对子View做任何限制，想要多大给它多大，一般用于系统内部，表示一种测量的状态
          */
         public static final int UNSPECIFIED = 0 << MODE_SHIFT;
 
@@ -22278,12 +22281,16 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
          * Measure specification mode: The parent has determined an exact size
          * for the child. The child is going to be given those bounds regardless
          * of how big it wants to be.
+         * 父容器已经检测出View所需要的精确大小，这个时候View的最终大小就是SpecSize所指定的值
+         * 它对应: android:height="match_parent"||android:height="xdp"
          */
         public static final int EXACTLY     = 1 << MODE_SHIFT;
 
         /**
          * Measure specification mode: The child can be as large as it wants up
          * to the specified size.
+         * 在父容器指定了一个可用大小即SpecSize, View的大小不能大于这个值,具体是什么值要看不同的View的具体实现.
+         * 它对应: android:height="wrap_content"
          */
         public static final int AT_MOST     = 2 << MODE_SHIFT;
 
@@ -22332,7 +22339,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
 
         /**
          * Extracts the mode from the supplied measure specification.
-         *
+         * 高两位存储mode的方式就是因为只有三种情况，如果有超过4种的测量方式 则需要更多位来表示mode
          * @param measureSpec the measure specification to extract the mode from
          * @return {@link android.view.View.MeasureSpec#UNSPECIFIED},
          *         {@link android.view.View.MeasureSpec#AT_MOST} or
@@ -22341,12 +22348,13 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
         @MeasureSpecMode
         public static int getMode(int measureSpec) {
             //noinspection ResourceType
+            //保留高两位的有效值 其余位全部置0
             return (measureSpec & MODE_MASK);
         }
 
         /**
          * Extracts the size from the supplied measure specification.
-         *
+         * 高两位直接擦除防止负数的情况出现
          * @param measureSpec the measure specification to extract the size from
          * @return the size in pixels defined in the supplied measure specification
          */
@@ -22354,6 +22362,12 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
             return (measureSpec & ~MODE_MASK);
         }
 
+        /**
+         * 用来校验宽高的大小的合法性
+         * @param measureSpec
+         * @param delta
+         * @return
+         */
         static int adjust(int measureSpec, int delta) {
             final int mode = getMode(measureSpec);
             int size = getSize(measureSpec);

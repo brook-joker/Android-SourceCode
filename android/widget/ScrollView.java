@@ -339,6 +339,7 @@ public class ScrollView extends FrameLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
+        //如果子View没有设置android:fillViewPort=true 则在测量完成以后 子View的高度即使没有充满屏幕 ScollView也不会处理
         if (!mFillViewport) {
             return;
         }
@@ -366,6 +367,7 @@ public class ScrollView extends FrameLayout {
             if (child.getMeasuredHeight() < desiredHeight) {
                 final int childWidthMeasureSpec = getChildMeasureSpec(
                         widthMeasureSpec, widthPadding, lp.width);
+                //测量模式为Exactly
                 final int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
                         desiredHeight, MeasureSpec.EXACTLY);
                 child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
@@ -1276,6 +1278,16 @@ public class ScrollView extends FrameLayout {
         child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
     }
 
+    /**
+     *  就是这个方法导致ScorllView嵌套ListViews时，ListView只显示一行
+     *  嵌套其他控件,控件高度和实际设置的高度不一样
+     * @param child The child to measure
+     * @param parentWidthMeasureSpec The width requirements for this view
+     * @param widthUsed Extra space that has been used up by the parent
+     *        horizontally (possibly by other children of the parent)
+     * @param parentHeightMeasureSpec The height requirements for this view
+     * @param heightUsed Extra space that has been used up by the parent
+     */
     @Override
     protected void measureChildWithMargins(View child, int parentWidthMeasureSpec, int widthUsed,
             int parentHeightMeasureSpec, int heightUsed) {
@@ -1286,6 +1298,7 @@ public class ScrollView extends FrameLayout {
                         + widthUsed, lp.width);
         final int usedTotal = mPaddingTop + mPaddingBottom + lp.topMargin + lp.bottomMargin +
                 heightUsed;
+        //ScrollView将Size和UNSPECIFIED传给子View
         final int childHeightMeasureSpec = MeasureSpec.makeSafeMeasureSpec(
                 Math.max(0, MeasureSpec.getSize(parentHeightMeasureSpec) - usedTotal),
                 MeasureSpec.UNSPECIFIED);

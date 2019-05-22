@@ -62,6 +62,12 @@ import java.util.List;
  * interaction the system has with the application.  An Instrumentation
  * implementation is described to the system through an AndroidManifest.xml's
  * &lt;instrumentation&gt; tag.
+ * 实现应用程序检测代码的基类。 在启用检测器的情况下运行时，将在任何应用程序代码之前为您实例化此类，从而允许您监视系统与应用程序的所有交互。
+ * 通过AndroidManifest.xml的＆lt; instrumentation＆gt;向系统描述Instrumentation实现。 标签。
+ *
+ *
+ *
+ *
  */
 public class Instrumentation {
 
@@ -1504,6 +1510,7 @@ public class Instrumentation {
                     final ActivityMonitor am = mActivityMonitors.get(i);
                     if (am.match(who, null, intent)) {
                         am.mHits++;
+                        //当该monitor阻塞activity启动,则直接返回
                         if (am.isBlocking()) {
                             return requestCode >= 0 ? am.getResult() : null;
                         }
@@ -1520,6 +1527,7 @@ public class Instrumentation {
                         intent.resolveTypeIfNeeded(who.getContentResolver()),
                         token, target != null ? target.mEmbeddedID : null,
                         requestCode, 0, null, options);
+            //检查activity是否启动成功
             checkStartActivityResult(result, intent);
         } catch (RemoteException e) {
             throw new RuntimeException("Failure from system", e);

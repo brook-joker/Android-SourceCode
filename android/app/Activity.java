@@ -4222,6 +4222,7 @@ public class Activity extends ContextThemeWrapper
             @Nullable Bundle options) {
         if (mParent == null) {
             options = transferSpringboardActivityOptions(options);
+            //转场动画的处理
             Instrumentation.ActivityResult ar =
                 mInstrumentation.execStartActivity(
                     this, mMainThread.getApplicationThread(), mToken, this,
@@ -4239,12 +4240,16 @@ public class Activity extends ContextThemeWrapper
                 // This can only be done when a result is requested because
                 // that guarantees we will get information back when the
                 // activity is finished, no matter what happens to it.
+                // 如果此开始请求结果，我们可以避免在收到结果之前使活动可见。
+                // 在onCreate（Bundle savedInstanceState）或onResume（）期间设置此代码将在此期间保持活动隐藏，
+                // 以避免闪烁。这只能在请求结果时完成，因为这保证了我们将在活动结束时获取信息， 无论发生什么事。
                 mStartedActivity = true;
             }
 
             cancelInputsAndStartExitTransition(options);
             // TODO Consider clearing/flushing other event sources and events for child windows.
         } else {
+            //如果存在Parent Activity则交给它处理
             if (options != null) {
                 mParent.startActivityFromChild(this, intent, requestCode, options);
             } else {

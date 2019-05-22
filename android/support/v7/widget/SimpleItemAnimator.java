@@ -72,6 +72,18 @@ abstract public class SimpleItemAnimator extends RecyclerView.ItemAnimator {
         return !mSupportsChangeAnimations || viewHolder.isInvalid();
     }
 
+
+    /**
+     * 当RecyclerView中的item在屏幕上由可见变为不可见时调用此方法
+     * @param viewHolder    The ViewHolder which should be animated
+     * @param preLayoutInfo The information that was returned from
+     *                      {@link #recordPreLayoutInformation(State, ViewHolder, int, List)}.
+     * @param postLayoutInfo The information that was returned from
+     *                       {@link #recordPostLayoutInformation(State, ViewHolder)}. Might be
+     *                       null if the LayoutManager did not layout the item.
+     *
+     * @return
+     */
     @Override
     public boolean animateDisappearance(@NonNull ViewHolder viewHolder,
             @NonNull ItemHolderInfo preLayoutInfo, @Nullable ItemHolderInfo postLayoutInfo) {
@@ -96,6 +108,19 @@ abstract public class SimpleItemAnimator extends RecyclerView.ItemAnimator {
         }
     }
 
+    /**
+     * 当RecyclerView中的item显示到屏幕上时调用此方法
+     * @param viewHolder     The ViewHolder which should be animated
+     * @param preLayoutInfo  The information that was returned from
+     *                       {@link #recordPreLayoutInformation(State, ViewHolder, int, List)}.
+     *                       Might be null if Item was just added to the adapter or
+     *                       LayoutManager does not support predictive animations or it could
+     *                       not predict that this ViewHolder will become visible.
+     * @param postLayoutInfo The information that was returned from {@link
+     *                       #recordPreLayoutInformation(State, ViewHolder, int, List)}.
+     *
+     * @return
+     */
     @Override
     public boolean animateAppearance(@NonNull ViewHolder viewHolder,
             @Nullable ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
@@ -130,6 +155,16 @@ abstract public class SimpleItemAnimator extends RecyclerView.ItemAnimator {
         return false;
     }
 
+    /**
+     * 当RecyclerView中的item状态发生改变时调用此方法(notifyItemChanged(position))
+     * @param oldHolder     The ViewHolder before the layout is started, might be the same
+     *                      instance with newHolder.
+     * @param newHolder     The ViewHolder after the layout is finished, might be the same
+     *                      instance with oldHolder.
+     * @param preInfo
+     * @param postInfo
+     * @return
+     */
     @Override
     public boolean animateChange(@NonNull ViewHolder oldHolder, @NonNull ViewHolder newHolder,
             @NonNull ItemHolderInfo preInfo, @NonNull ItemHolderInfo postInfo) {

@@ -356,6 +356,8 @@ public class Proxy implements java.io.Serializable {
 
      * @throws  NullPointerException if the {@code interfaces} array
      *          argument or any of its elements are {@code null}
+     *
+     * 该方法用于获取关联于指定类装载器和一组接口的动态代理类的类对象
      */
     @CallerSensitive
     public static Class<?> getProxyClass(ClassLoader loader,
@@ -698,6 +700,10 @@ public class Proxy implements java.io.Serializable {
      *          argument or any of its elements are {@code null}, or
      *          if the invocation handler, {@code h}, is
      *          {@code null}
+     * - loader 指定代理类的ClassLoader加载器
+     * - interfaces 指定代理类要实现的接口
+     * - h: 表示的是当我这个动态代理对象在调用方法的时候，会关联到哪一个InvocationHandler对象上
+     *
      */
     @CallerSensitive
     public static Object newProxyInstance(ClassLoader loader,
@@ -786,6 +792,7 @@ public class Proxy implements java.io.Serializable {
      * @return  {@code true} if the class is a proxy class and
      *          {@code false} otherwise
      * @throws  NullPointerException if {@code cl} is {@code null}
+     * 该方法用于获取关联于指定类装载器和一组接口的动态代理类的类对象
      */
     public static boolean isProxyClass(Class<?> cl) {
         return Proxy.class.isAssignableFrom(cl) && proxyClassCache.containsValue(cl);
@@ -793,7 +800,7 @@ public class Proxy implements java.io.Serializable {
 
     /**
      * Returns the invocation handler for the specified proxy instance.
-     *
+     * 该方法用于获取指定代理对象所关联的调用处理器
      * @param   proxy the proxy instance to return the invocation handler for
      * @return  the invocation handler for the proxy instance
      * @throws  IllegalArgumentException if the argument is not a

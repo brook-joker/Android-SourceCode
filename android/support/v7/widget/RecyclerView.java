@@ -515,6 +515,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
 
     /**
      * The callback to convert view info diffs into animations.
+     * 将视图信息转换为动画的回调
      */
     private final ViewInfoStore.ProcessCallback mViewInfoProcessCallback =
             new ViewInfoStore.ProcessCallback() {
@@ -3198,12 +3199,17 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
      * Wrapper around layoutChildren() that handles animating changes caused by layout.
      * Animations work on the assumption that there are five different kinds of items
      * in play:
+     * items在layout布局前和布局后都是可见状态
      * PERSISTENT: items are visible before and after layout
+     * items在重新布局前可见，重新布局后不可见
      * REMOVED: items were visible before layout and were removed by the app
+     * items在重新布局前不存在，当重新布局后由APP添加到视图当中
      * ADDED: items did not exist before layout and were added by the app
+     * items在适配器中的数据源中存在但是在屏幕上是由可见状态变为不可见状态，	一般是一个item被滑动出屏幕时的动画
      * DISAPPEARING: items exist in the data set before/after, but changed from
      * visible to non-visible in the process of layout (they were moved off
      * screen as a side-effect of other changes)
+     * 和DISAPPEARING相反
      * APPEARING: items exist in the data set before/after, but changed from
      * non-visible to visible in the process of layout (they were moved on
      * screen as a side-effect of other changes)
@@ -3232,8 +3238,10 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
         }
         mState.mIsMeasuring = false;
         if (mState.mLayoutStep == State.STEP_START) {
+            //记录重新调用onLayout之前，用户操作的View的相关信息(getLeft(), getRight(), getTop(), getBottom()等)
             dispatchLayoutStep1();
             mLayout.setExactMeasureSpecsFrom(this);
+            //进行真正意义上的layout工作，只是调用onLayoutChildren方法递归摆放子控件的位置，此方法可能会被调用多次
             dispatchLayoutStep2();
         } else if (mAdapterHelper.hasUpdates() || mLayout.getWidth() != getWidth() ||
                 mLayout.getHeight() != getHeight()) {
@@ -3245,6 +3253,8 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
             // always make sure we sync them (to ensure mode is exact)
             mLayout.setExactMeasureSpecsFrom(this);
         }
+        //当dispatchLayoutStep2()进行完layout操作之后，RecyclerView在此方法中记录下重新布局之后，
+        // 用户所操作View的相关信息(同样是getLeft(), getRight(), getTop(), getBottom())
         dispatchLayoutStep3();
     }
 
@@ -3402,6 +3412,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
                 }
             }
             // we don't process disappearing list because they may re-appear in post layout pass.
+            // 我们不处理列表消失，因为它们可能会重新出现在布局之后传递。
             clearOldPositions();
         } else {
             clearOldPositions();
@@ -3414,6 +3425,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
     /**
      * The second layout step where we do the actual layout of the views for the final state.
      * This step might be run multiple times if necessary (e.g. measure).
+     * 第二个布局步骤，我们为最终状态执行视图的实际布局。 如有必要，该步骤可以多次运行（例如测量）。
      */
     private void dispatchLayoutStep2() {
         eatRequestLayout();
@@ -3423,7 +3435,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
         mState.mItemCount = mAdapter.getItemCount();
         mState.mDeletedInvisibleItemCountSincePreviousLayout = 0;
 
-        // Step 2: Run layout
+        // Step 2: Run layout 进行布局
         mState.mInPreLayout = false;
         mLayout.onLayoutChildren(mRecycler, mState);
 
@@ -3431,6 +3443,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
         mPendingSavedState = null;
 
         // onLayoutChildren may have caused client code to disable item animations; re-check
+        // onLayoutChildren可能导致客户端代码禁用项目动画;重新检查
         mState.mRunSimpleAnimations = mState.mRunSimpleAnimations && mItemAnimator != null;
         mState.mLayoutStep = State.STEP_ANIMATIONS;
         onExitLayoutOrScroll();
@@ -3440,6 +3453,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
     /**
      * The final step of the layout where we save the information about views for animations,
      * trigger animations and do any necessary cleanup.
+     * 布局的最后一步，我们保存有关动画视图的信息，触发动画并进行任何必要的清理。
      */
     private void dispatchLayoutStep3() {
         mState.assertLayoutStep(State.STEP_ANIMATIONS);
@@ -3450,6 +3464,8 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
             // Step 3: Find out where things are now, and process change animations.
             // traverse list in reverse because we may call animateChange in the loop which may
             // remove the target view holder.
+            //找出现在的位置，并处理更改动画。
+            // 因为我们可以在循环中调用animateChange来移除目标视图持有者，所以反向遍历列表。
             for (int i = mChildHelper.getChildCount() - 1; i >= 0; i--) {
                 ViewHolder holder = getChildViewHolderInt(mChildHelper.getChildAt(i));
                 if (holder.shouldIgnore()) {
@@ -3495,6 +3511,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
             }
 
             // Step 4: Process view info lists and trigger animations
+            // 处理视图信息列表和触发动画
             mViewInfoStore.process(mViewInfoProcessCallback);
         }
 
@@ -11500,6 +11517,8 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
          * @return An ItemHolderInfo instance that preserves necessary information about the
          * ViewHolder. This object will be passed back to related <code>animate**</code> methods
          * after layout is complete.
+         * ItemHolderInfo实例，用于保留有关ViewHolder的必要信息。
+         * 布局完成后，此对象将传递回相关的<code> animate ** </ code>方法。
          *
          * @see #recordPostLayoutInformation(State, ViewHolder)
          * @see #animateAppearance(ViewHolder, ItemHolderInfo, ItemHolderInfo)
@@ -11726,6 +11745,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
         }
 
         /**
+         * 统筹RecyclerView中所有的动画，统一启动执行
          * Called when there are pending animations waiting to be started. This state
          * is governed by the return values from
          * {@link #animateAppearance(ViewHolder, ItemHolderInfo, ItemHolderInfo)
