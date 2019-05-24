@@ -635,6 +635,13 @@ public class Handler {
         return enqueueMessage(queue, msg, 0);
     }
 
+    /**
+     * 所有的send和post最终都会加入到队列当中
+     * @param queue
+     * @param msg
+     * @param uptimeMillis
+     * @return
+     */
     private boolean enqueueMessage(MessageQueue queue, Message msg, long uptimeMillis) {
         msg.target = this;
         if (mAsynchronous) {

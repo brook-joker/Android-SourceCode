@@ -199,7 +199,9 @@ public class ThreadLocal<T> {
      *        this thread-local.
      */
     public void set(T value) {
+        //获取当前线程
         Thread t = Thread.currentThread();
+        //获取当前线程的
         ThreadLocalMap map = getMap(t);
         if (map != null)
             map.set(this, value);
@@ -296,6 +298,12 @@ public class ThreadLocal<T> {
      * WeakReferences for keys. However, since reference queues are not
      * used, stale entries are guaranteed to be removed only when
      * the table starts running out of space.
+     *
+     * ThreadLocalMap是一个自定义的哈希映射，仅适用于维护线程本地值。
+     * 不会在ThreadLocal类之外导出任何操作。
+     * 该类是包私有的，允许在Thread类中声明字段。
+     * 为了帮助处理非常大且长期使用的用法，哈希表条目使用WeakReferences作为键。
+     * 但是，由于未使用引用队列，因此只有在表开始空间不足时才能保证删除过时条目。
      */
     static class ThreadLocalMap {
 
