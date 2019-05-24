@@ -6170,6 +6170,8 @@ public final class ActivityThread {
 
         //构造ActivityThread对象并Attach
         ActivityThread thread = new ActivityThread();
+
+        //建立Binder管道（创建Binder新线程）
         thread.attach(false);
 
         //获取主线程的Handler

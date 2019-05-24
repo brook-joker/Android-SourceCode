@@ -4189,6 +4189,7 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
             throw new IllegalArgumentException("Cannot add a null child view to a ViewGroup");
         }
         LayoutParams params = child.getLayoutParams();
+        //如果params不存在的情况下,默认生成一个wrap_content的LayoutParams
         if (params == null) {
             params = generateDefaultLayoutParams();
             if (params == null) {
@@ -4422,10 +4423,12 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
             mTransition.addChild(this, child);
         }
 
+        //布局参数检查  如果类型不匹配 则生成默认的覆盖掉
         if (!checkLayoutParams(params)) {
             params = generateLayoutParams(params);
         }
 
+        //是否阻止重新请求布局
         if (preventRequestLayout) {
             child.mLayoutParams = params;
         } else {
@@ -6946,6 +6949,7 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
             @ViewDebug.IntToString(from = MATCH_PARENT, to = "MATCH_PARENT"),
             @ViewDebug.IntToString(from = WRAP_CONTENT, to = "WRAP_CONTENT")
         })
+        //宽度
         public int width;
 
         /**
@@ -6957,10 +6961,12 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
             @ViewDebug.IntToString(from = MATCH_PARENT, to = "MATCH_PARENT"),
             @ViewDebug.IntToString(from = WRAP_CONTENT, to = "WRAP_CONTENT")
         })
+        //高度
         public int height;
 
         /**
          * Used to animate layouts.
+         * 布局动画参数
          */
         public LayoutAnimationController.AnimationParameters layoutAnimationParameters;
 
@@ -7219,12 +7225,14 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
 
             int margin = a.getDimensionPixelSize(
                     com.android.internal.R.styleable.ViewGroup_MarginLayout_layout_margin, -1);
+            //如果获取到的layout_margin值存在 直接覆盖所有的layout_marginXX
             if (margin >= 0) {
                 leftMargin = margin;
                 topMargin = margin;
                 rightMargin= margin;
                 bottomMargin = margin;
             } else {
+                //否则依次去读取layout_marginXX
                 leftMargin = a.getDimensionPixelSize(
                         R.styleable.ViewGroup_MarginLayout_layout_marginLeft,
                         UNDEFINED_MARGIN);
