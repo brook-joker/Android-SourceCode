@@ -2779,6 +2779,7 @@ public class Activity extends ContextThemeWrapper
      * The default implementation always returns false.
      */
     public boolean onTouchEvent(MotionEvent event) {
+        //DialogActivity android:windowCloseOnTouchOutside=true的话 当点击Activity内容区域之外的话就会finish这个Activity
         if (mWindow.shouldCloseOnTouch(this, event)) {
             finish();
             return true;
@@ -3055,6 +3056,7 @@ public class Activity extends ContextThemeWrapper
      */
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            //如果自定义的交互操作
             onUserInteraction();
         }
         //如果是Dialog或者PhoneWindow的话 那么事件交由它们处理

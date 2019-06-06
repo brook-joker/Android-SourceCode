@@ -19765,6 +19765,10 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      * pass ({@link #isInLayout()}. If layout is happening, the request may be honored at the
      * end of the current layout pass (and then layout will run again) or after the current
      * frame is drawn and the next layout occurs.
+     * 当View内容发生改变导致此View的布局无效时，调用此方法。
+     * 调用之后，将通知View Tree重新布局
+     * 当视图层次结构当前处于布局传递中时，不应调用此方法（{@link #isInLayout（）}。
+     * 如果发生布局，则可以在当前布局传递结束时接受请求（然后布局将再次运行） ）或在绘制当前帧并发生下一个布局之后。
      *
      * <p>Subclasses which override this method should call the superclass method to
      * handle possible request-during-layout errors correctly.</p>
@@ -19778,6 +19782,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
             // not the views in its parent hierarchy
             ViewRootImpl viewRoot = getViewRootImpl();
             if (viewRoot != null && viewRoot.isInLayout()) {
+                //正在请求布局中
                 if (!viewRoot.requestLayoutDuringLayout(this)) {
                     return;
                 }
@@ -19785,10 +19790,12 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
             mAttachInfo.mViewRequestingLayout = this;
         }
 
+        //将当前View设置标记位PFLAG_FORCE_LAYOUT和PFLAG_INVALIDATED
         mPrivateFlags |= PFLAG_FORCE_LAYOUT;
         mPrivateFlags |= PFLAG_INVALIDATED;
 
         if (mParent != null && !mParent.isLayoutRequested()) {
+            //向父容器请求布局
             mParent.requestLayout();
         }
         if (mAttachInfo != null && mAttachInfo.mViewRequestingLayout == this) {
@@ -19842,6 +19849,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
         long key = (long) widthMeasureSpec << 32 | (long) heightMeasureSpec & 0xffffffffL;
         if (mMeasureCache == null) mMeasureCache = new LongSparseLongArray(2);
 
+        //判断是否请求的重新测量布局
         final boolean forceLayout = (mPrivateFlags & PFLAG_FORCE_LAYOUT) == PFLAG_FORCE_LAYOUT;
 
         // Optimize layout by avoiding an extra EXACTLY pass when the view is

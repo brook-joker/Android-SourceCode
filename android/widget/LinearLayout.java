@@ -1835,8 +1835,10 @@ public class LinearLayout extends ViewGroup {
     @Override
     protected LayoutParams generateDefaultLayoutParams() {
         if (mOrientation == HORIZONTAL) {
+            //水平方向水平垂直全部自适应
             return new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         } else if (mOrientation == VERTICAL) {
+            //垂直方向水平match 垂直方向自适应
             return new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         }
         return null;
@@ -1858,6 +1860,7 @@ public class LinearLayout extends ViewGroup {
     // Override to allow type-checking of LayoutParams.
     @Override
     protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
+        //检查布局参数是否为当前布局类型
         return p instanceof LinearLayout.LayoutParams;
     }
 
@@ -1918,20 +1921,6 @@ public class LinearLayout extends ViewGroup {
             @ViewDebug.IntToString(from = Gravity.FILL,              to = "FILL")
         })
         public int gravity = -1;
-
-        /**
-         * {@inheritDoc}
-         */
-        public LayoutParams(Context c, AttributeSet attrs) {
-            super(c, attrs);
-            TypedArray a =
-                    c.obtainStyledAttributes(attrs, com.android.internal.R.styleable.LinearLayout_Layout);
-
-            weight = a.getFloat(com.android.internal.R.styleable.LinearLayout_Layout_layout_weight, 0);
-            gravity = a.getInt(com.android.internal.R.styleable.LinearLayout_Layout_layout_gravity, -1);
-
-            a.recycle();
-        }
 
         /**
          * {@inheritDoc}

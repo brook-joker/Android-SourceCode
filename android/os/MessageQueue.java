@@ -304,6 +304,10 @@ public final class MessageQueue {
         return newWatchedEvents;
     }
 
+    /**
+     * 从消息队里面取消息
+     * @return
+     */
     Message next() {
         // Return here if the message loop has already quit and been disposed.
         // This can happen if the application tries to restart a looper after quit
@@ -324,6 +328,7 @@ public final class MessageQueue {
 
             synchronized (this) {
                 // Try to retrieve the next message.  Return if found.
+                // 获得当前的时间
                 final long now = SystemClock.uptimeMillis();
                 Message prevMsg = null;
                 Message msg = mMessages;

@@ -84,6 +84,10 @@ public final class Looper {
         prepare(true);
     }
 
+    /**
+     * 每个线程只允许拥有一个Looper
+     * @param quitAllowed
+     */
     private static void prepare(boolean quitAllowed) {
         if (sThreadLocal.get() != null) {
             throw new RuntimeException("Only one Looper may be created per thread");
@@ -118,6 +122,8 @@ public final class Looper {
 
     /**
      * Run the message queue in this thread. Be sure to call
+     *
+     * 主线程默认初始化
      * {@link #quit()} to end the loop.
      */
     public static void loop() {
@@ -133,6 +139,7 @@ public final class Looper {
         final long ident = Binder.clearCallingIdentity();
 
         for (;;) {
+            //当获取不到消息的时候会阻塞
             Message msg = queue.next(); // might block
             if (msg == null) {
                 // No message indicates that the message queue is quitting.
@@ -180,6 +187,7 @@ public final class Looper {
     /**
      * Return the Looper object associated with the current thread.  Returns
      * null if the calling thread is not associated with a Looper.
+     * 返回当前线程绑定的Looper, 如果没有关联的Looper则返回null
      */
     public static @Nullable Looper myLooper() {
         return sThreadLocal.get();
