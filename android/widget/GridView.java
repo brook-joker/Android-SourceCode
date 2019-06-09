@@ -1410,6 +1410,7 @@ public class GridView extends AbsListView {
      * Obtains the view and adds it to our list of children. The view can be
      * made fresh, converted from an unused view, or used as is if it was in
      * the recycle bin.
+     * 获取视图并将其添加到我们的子项列表中。 视图可以是新的，从未使用的视图转换，或者如果它在回收站中那样使用。
      *
      * @param position logical position in the list
      * @param y top or bottom edge of the view to add

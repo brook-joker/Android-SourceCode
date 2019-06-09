@@ -6575,6 +6575,7 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
 
         /**
          * Unsorted views that can be used by the adapter as a convert view.
+         * 索引对应不同的TYPE的view 存放的List为对应TYPE的废弃View
          */
         private ArrayList<View>[] mScrapViews;
 
@@ -6656,7 +6657,8 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
 
         /**
          * Fill ActiveViews with all of the children of the AbsListView.
-         *
+         * RecycleBin当中使用mActiveViews这个数组来存储View，
+         * 调用这个方法后就会根据传入的参数来将ListView中的指定元素存储到mActiveViews数组当中。
          * @param childCount The minimum number of views mActiveViews should hold
          * @param firstActivePosition The position of the first view that will be stored in
          *        mActiveViews
@@ -6686,6 +6688,10 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
         /**
          * Get the view corresponding to the specified position. The view will be removed from
          * mActiveViews if it is found.
+         * 用于从mActiveViews数组当中获取数据。
+         * 该方法接收一个position参数，表示元素在ListView当中的位置，
+         * 方法内部会自动将position值转换成mActiveViews数组对应的下标值。需要注意的是，mActiveViews当中所存储的View，
+         * 一旦被获取了之后就会从mActiveViews当中移除，下次获取同样位置的View将会返回null，也就是说mActiveViews不能被重复利用。
          *
          * @param position The position to look up in mActiveViews
          * @return The view if it is found, null otherwise
@@ -6747,13 +6753,17 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
          * @return A view from the ScrapViews collection. These are unordered.
          */
         View getScrapView(int position) {
+            //获取到对应的Type
             final int whichScrap = mAdapter.getItemViewType(position);
             if (whichScrap < 0) {
                 return null;
             }
+            //如果是一种类型的View
             if (mViewTypeCount == 1) {
+                //从mCurrentScrap中获取
                 return retrieveFromScrap(mCurrentScrap, position);
             } else if (whichScrap < mScrapViews.length) {
+                //否则根据Type从mScrapViews中获取
                 return retrieveFromScrap(mScrapViews[whichScrap], position);
             }
             return null;
@@ -6761,6 +6771,8 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
 
         /**
          * Puts a view into the list of scrap views.
+         * 用于将一个废弃的View进行缓存，该方法接收一个View参数，当有某个View确定要废弃掉的时候(比如滚动出了屏幕)，
+         * 就应该调用这个方法来对View进行缓存，RecycleBin当中使用mScrapViews和mCurrentScrap这两个List来存储废弃View
          * <p>
          * If the list data hasn't changed or the adapter has stable IDs, views
          * with transient state will be preserved for later retrieval.
