@@ -2287,6 +2287,9 @@ public class PopupWindow {
             } else if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
                 dismiss();
                 return true;
+            } else if(event.getAction() == MotionEvent.ACTION_MOVE) {
+                dismiss();
+                return false;
             } else {
                 return super.onTouchEvent(event);
             }

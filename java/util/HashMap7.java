@@ -272,7 +272,7 @@ public class HashMap7<K,V>
     }
 
     /**
-     * 创建Entry, 并把Entry放到单向链表尾部
+     * 创建Entry, 并把旧的Entry放到单向链表尾部  头插法
      */
     void createEntry(int hash, K key, V value, int bucketIndex) {
         Entry<K,V> e = table[bucketIndex];
