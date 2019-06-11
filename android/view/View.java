@@ -19807,6 +19807,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      * Forces this view to be laid out during the next layout pass.
      * This method does not call requestLayout() or forceLayout()
      * on the parent.
+     * 强制在下一个布局传递期间布置此视图。此方法不会在父级上调用requestLayout（）或forceLayout（）。
      */
     public void forceLayout() {
         if (mMeasureCache != null) mMeasureCache.clear();

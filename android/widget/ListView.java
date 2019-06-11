@@ -698,16 +698,22 @@ public class ListView extends AbsListView {
         if ((mGroupFlags & CLIP_TO_PADDING_MASK) == CLIP_TO_PADDING_MASK) {
             end -= mListPadding.bottom;
         }
-
+        /**
+         *end是ListView底部减去顶部的像素值，mItemCount是Adapter中元素数量
+         *刚开始nextTop一定小于end，且POS也小于mItemCount
+         *循环一下nextTop增加，POS+1，当nextTop>end时表示超出屏幕
+         * 若pos>mItemCount，表示Adapter中元素已经完全遍历，跳出循环
+         */
         while (nextTop < end && pos < mItemCount) {
             // is this the selected item?
             boolean selected = pos == mSelectedPosition;
             View child = makeAndAddView(pos, nextTop, true, mListPadding.left, selected);
-
+            //循环一次高度增加：bottom+分隔符高度
             nextTop = child.getBottom() + mDividerHeight;
             if (selected) {
                 selectedView = child;
             }
+            //元素+1.向下遍历
             pos++;
         }
 
@@ -751,7 +757,7 @@ public class ListView extends AbsListView {
 
     /**
      * Fills the list from top to bottom, starting with mFirstPosition
-     *
+     * 自顶部向下填充View
      * @param nextTop The location where the top of the first item should be
      *        drawn
      *
@@ -1561,6 +1567,7 @@ public class ListView extends AbsListView {
 
             final int childrenTop = mListPadding.top;
             final int childrenBottom = mBottom - mTop - mListPadding.bottom;
+            //获取当前childcount:第一次调用为0，第二次开始有值
             final int childCount = getChildCount();
 
             int index = 0;
@@ -1571,6 +1578,7 @@ public class ListView extends AbsListView {
             View oldFirst = null;
             View newSel = null;
 
+            //正常情况下mLayoutMode=LAYOUT_NORMAL,所以我们只需要看default
             // Remember stuff we will need down below
             switch (mLayoutMode) {
             case LAYOUT_SET_SELECTION:
@@ -1605,6 +1613,7 @@ public class ListView extends AbsListView {
 
 
             boolean dataChanged = mDataChanged;
+            //数据发生改变时,通过RecycleBin机制将所有的废弃View添加进集合中
             if (dataChanged) {
                 handleDataChanged();
             }
@@ -1683,18 +1692,26 @@ public class ListView extends AbsListView {
 
             // Pull all children into the RecycleBin.
             // These views will be reused if possible
+            /**
+             * 第一次没有缓存childCount=0，从第二次开始缓存
+             * 数据没有改变，通过RecycleBin机制将所有的View缓存
+             */
             final int firstPosition = mFirstPosition;
             final RecycleBin recycleBin = mRecycler;
+            //数据源发生改变时，通过RecyclerBin机制将所有的废弃View添加进集合中
             if (dataChanged) {
                 for (int i = 0; i < childCount; i++) {
                     recycleBin.addScrapView(getChildAt(i), firstPosition+i);
                 }
             } else {
+                //否则填充视图中规定view
                 recycleBin.fillActiveViews(childCount, firstPosition);
             }
 
             // Clear out old views
+            //清除所有的View
             detachAllViewsFromParent();
+            //recycleBin删除所有不存储在废弃View视图中的child
             recycleBin.removeSkippedScrap();
 
             switch (mLayoutMode) {
@@ -1738,6 +1755,13 @@ public class ListView extends AbsListView {
                 sel = moveSelection(oldSel, newSel, delta, childrenTop, childrenBottom);
                 break;
             default:
+                /**
+                 * 第一次onLayout，childcount=0,默认布局是从上往下
+                 *
+                 * 第二次开始，childcount开始>0
+                 *
+                 * mStackFromBottom:false表示从顶部向下，true表示从底部向上
+                 */
                 if (childCount == 0) {
                     if (!mStackFromBottom) {
                         final int position = lookForSelectablePosition(0, true);
@@ -1763,6 +1787,9 @@ public class ListView extends AbsListView {
             }
 
             // Flush any cached views that did not get reused above
+            //刷新上面没有被重用的缓存视图
+            //调用scrapActiveViews方法将mActiveViews中存储的View缓存到对应的Type类型的集合中
+            //注意每种Type的集合打大小不得超过mActiveViews的大小
             recycleBin.scrapActiveViews();
 
             // remove any header/footer that has been temp detached and not re-attached
@@ -1955,9 +1982,16 @@ public class ListView extends AbsListView {
      */
     private View makeAndAddView(int position, int y, boolean flow, int childrenLeft,
             boolean selected) {
+        //ListView初始化时,mRecycler中缓存的View为null
         if (!mDataChanged) {
             // Try to use an existing view for this position.
+            // 根据position从缓存中取出对应的View
             final View activeView = mRecycler.getActiveView(position);
+            /**
+             *   在Layoutchild中第二次调用了recycleBin.fillActiveViews(childCount, firstPosition)缓存了
+             *   屏幕显示的所有View，因此直接读取缓存复用，调用setupChild方法填充ListView
+             */
+
             if (activeView != null) {
                 // Found it. We're reusing an existing child, so it just needs
                 // to be positioned like a scrap view.
@@ -1968,6 +2002,7 @@ public class ListView extends AbsListView {
 
         // Make a new view for this position, or convert an unused view if
         // possible.
+        //返回一个当前位置的View，有缓存重用缓存View，没有则调用adapter的getView方法返回一个
         final View child = obtainView(position, mIsScrap);
 
         // This needs to be positioned and measured.
@@ -2033,9 +2068,17 @@ public class ListView extends AbsListView {
                 child.setActivated(mCheckStates.get(position));
             }
         }
-
+        /**
+         * 添加一个新的Item，isAttachedToWindow=false调用addViewInLayout方法
+         *
+         * 因为在layoutChild中我们detach了所有的子View，防止数据错乱，此时服用一个detach的
+         *
+         * item，isAttachedToWindow=true，调用attachViewToParent方法
+         */
         if ((isAttachedToWindow && !p.forceAdd) || (p.recycledHeaderFooter
                 && p.viewType == AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER)) {
+            //向上滑动flowDown=false  向下滑动flowDown=true
+            //attachViewToParent中若index<0,则默认将child添加到底部
             attachViewToParent(child, flowDown ? -1 : 0, p);
 
             // If the view was previously attached for a different position,

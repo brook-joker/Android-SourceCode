@@ -2149,13 +2149,16 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
 
+        //默认会调用2次Layout
         mInLayout = true;
-
+        //childCount由适配器填充,因此第一次获取的count=0
         final int childCount = getChildCount();
+        //数据源改变的时候强制子View进行更新
         if (changed) {
             for (int i = 0; i < childCount; i++) {
                 getChildAt(i).forceLayout();
             }
+            //通知RecyclerBin调用方法强制缓存所有Type的集合元素重新绘制
             mRecycler.markChildrenDirty();
         }
 
@@ -2359,11 +2362,17 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
             return transientView;
         }
 
+        //从废弃的缓存View列表中获取一个View, mRecyclerView根据Position获取Type来获取View
         final View scrapView = mRecycler.getScrapView(position);
+        //调用Adapter的getView方法获取一个View
+        //因为第一次调用时mRecycler钟缓存的废弃view==null，所以直接调用mAdapter.getView方法返回一个View
+        //这里可以看出在我们自定义适配器时要判断convertView是否为null，
         final View child = mAdapter.getView(position, scrapView, this);
+        
         if (scrapView != null) {
             if (child != scrapView) {
                 // Failed to re-bind the data, return scrap to the heap.
+                //view不匹配，重新缓存到废弃View集合中
                 mRecycler.addScrapView(scrapView, position);
             } else if (child.isTemporarilyDetached()) {
                 outMetadata[0] = true;
@@ -6588,6 +6597,10 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
         private SparseArray<View> mTransientStateViews;
         private LongSparseArray<View> mTransientStateViewsById;
 
+        /**
+         * 根据不同的ViewType创建不同的缓存的集合
+         * @param viewTypeCount
+         */
         public void setViewTypeCount(int viewTypeCount) {
             if (viewTypeCount < 1) {
                 throw new IllegalArgumentException("Can't have a viewTypeCount < 1");
@@ -6602,11 +6615,15 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
             mScrapViews = scrapViews;
         }
 
+        /**
+         * 强制所有的项目视图执行一次绘制包含onMeasure,onLayout,onDraw
+         */
         public void markChildrenDirty() {
             if (mViewTypeCount == 1) {
                 final ArrayList<View> scrap = mCurrentScrap;
                 final int scrapCount = scrap.size();
                 for (int i = 0; i < scrapCount; i++) {
+                    //forceLayout强制重新执行onMeasure，onLayout，onDraw
                     scrap.get(i).forceLayout();
                 }
             } else {
