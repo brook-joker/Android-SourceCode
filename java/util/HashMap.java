@@ -375,7 +375,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      */
     static final int hash(Object key) {
         int h;
-        //至多允许一个nullkey值 当key为null值时 对应的hashcode位0
+        //至多允许一个null key值 当key为null值时 对应的hashcode位0
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
 
@@ -617,6 +617,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
             if ((e = first.next) != null) {
                 //// 判断是否是红黑树
                 if (first instanceof TreeNode)
+                    //平衡二叉树查找 以hashcode为判断条件
                     return ((TreeNode<K,V>)first).getTreeNode(hash, key);
                 do {
                     // 链表遍历
@@ -699,7 +700,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                         //使用尾插法（JAVA7使用的是头插法）插入到链表的后面
                         p.next = newNode(hash, key, value, null);
                         if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
-                            //如果新插入的节点是第9个节点的 触发树化 将链表转成红黑树
+                            //如果新插入的节点是第8个节点的 触发树化 将链表转成红黑树
                             treeifyBin(tab, hash);
                         break;
                     }
