@@ -13620,6 +13620,10 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      * for cases that do not need it (for example, a component that remains at
      * the same dimensions with the same content).
      *
+     * 这是invalidate（）工作实际发生的地方。
+     * 完全invalidate（）会导致绘图缓存失效，但可以将invalidateCache设置为false来调用此函数，
+     * 以跳过不需要它的情况下的无效步骤（例如，与该节点保持相同维度的组件） 相同的内容）。
+     *
      * @param invalidateCache Whether the drawing cache for this view should be
      *            invalidated as well. This is usually true for a full
      *            invalidate, but may be set to false if the View's contents or
@@ -13636,10 +13640,12 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
             return;
         }
 
+        //这里判断该子View是否可见或者是否处于动画中
         if (skipInvalidate()) {
             return;
         }
 
+        //根据View的标记位来判断该子View是否需要重绘，假如View没有任何变化，那么就不需要重绘
         if ((mPrivateFlags & (PFLAG_DRAWN | PFLAG_HAS_BOUNDS)) == (PFLAG_DRAWN | PFLAG_HAS_BOUNDS)
                 || (invalidateCache && (mPrivateFlags & PFLAG_DRAWING_CACHE_VALID) == PFLAG_DRAWING_CACHE_VALID)
                 || (mPrivateFlags & PFLAG_INVALIDATED) != PFLAG_INVALIDATED
@@ -13650,15 +13656,17 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
                 mPrivateFlags &= ~PFLAG_DRAWN;
             }
 
-            //
+            //设置PFLAG_DIRTY标记位
             mPrivateFlags |= PFLAG_DIRTY;
 
             if (invalidateCache) {
+                //设置自己的视图无效
                 mPrivateFlags |= PFLAG_INVALIDATED;
                 mPrivateFlags &= ~PFLAG_DRAWING_CACHE_VALID;
             }
 
             // Propagate the damage rectangle to the parent view.
+            // 将损坏矩形传播到父视图。 即需要重绘制的区域告诉Parent
             final AttachInfo ai = mAttachInfo;
             final ViewParent p = mParent;
             if (p != null && ai != null && l < r && t < b) {
@@ -13802,6 +13810,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      */
     protected void invalidateParentCaches() {
         if (mParent instanceof View) {
+            //将父布局的Flag设置为PFLAG_INVALIDATED
             ((View) mParent).mPrivateFlags |= PFLAG_INVALIDATED;
         }
     }
@@ -17172,12 +17181,12 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
          * Draw traversal performs several drawing steps which must be executed
          * in the appropriate order:
          *
-         *      1. Draw the background
-         *      2. If necessary, save the canvas' layers to prepare for fading
-         *      3. Draw view's content
-         *      4. Draw children
-         *      5. If necessary, draw the fading edges and restore layers
-         *      6. Draw decorations (scrollbars for instance)
+         *      1. Draw the background 对View的背景进行绘制
+         *      2. If necessary, save the canvas' layers to prepare for fading  保存当前的图层信息(可跳过)
+         *      3. Draw view's content 绘制View的内容
+         *      4. Draw children 对View的子View进行绘制(如果有子View)
+         *      5. If necessary, draw the fading edges and restore layers 绘制View的褪色的边缘，类似于阴影效果
+         *      6. Draw decorations (scrollbars for instance) 绘制View的装饰（例如：滚动条）
          */
 
         // Step 1, draw the background, if needed
@@ -22818,6 +22827,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
     /**
      * A set of information given to a view when it is attached to its parent
      * window.
+     * 当添加到父View时的一组信息
      */
     final static class AttachInfo {
         interface Callbacks {

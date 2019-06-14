@@ -5149,6 +5149,7 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
                 mPrivateFlags &= ~PFLAG_DRAWING_CACHE_VALID;
             }
 
+            //储存子View的mLeft和mTop值
             final int[] location = attachInfo.mInvalidateChildLocation;
             location[CHILD_LEFT_INDEX] = child.mLeft;
             location[CHILD_TOP_INDEX] = child.mTop;
@@ -5185,6 +5186,7 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
                     view = (View) parent;
                 }
 
+                //动画标记位
                 if (drawAnimation) {
                     if (view != null) {
                         view.mPrivateFlags |= PFLAG_DRAW_ANIMATION;
@@ -5201,10 +5203,12 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
                         opaqueFlag = PFLAG_DIRTY;
                     }
                     if ((view.mPrivateFlags & PFLAG_DIRTY_MASK) != PFLAG_DIRTY) {
+                        //对当前View的标记位进行设置
                         view.mPrivateFlags = (view.mPrivateFlags & ~PFLAG_DIRTY_MASK) | opaqueFlag;
                     }
                 }
 
+                //调用ViewGrup的invalidateChildInParent，如果已经达到最顶层view,则调用ViewRootImpl
                 parent = parent.invalidateChildInParent(location, dirty);
                 if (view != null) {
                     // Account for transform on current parent
@@ -5237,6 +5241,7 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
                 (mPrivateFlags & PFLAG_DRAWING_CACHE_VALID) == PFLAG_DRAWING_CACHE_VALID) {
             if ((mGroupFlags & (FLAG_OPTIMIZE_INVALIDATE | FLAG_ANIMATION_DONE)) !=
                         FLAG_OPTIMIZE_INVALIDATE) {
+                //将dirty中的坐标转化为父容器中的坐标，考虑mScrollX和mScrollY的影响
                 dirty.offset(location[CHILD_LEFT_INDEX] - mScrollX,
                         location[CHILD_TOP_INDEX] - mScrollY);
                 if ((mGroupFlags & FLAG_CLIP_CHILDREN) == 0) {
@@ -5253,6 +5258,7 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
                 }
                 mPrivateFlags &= ~PFLAG_DRAWING_CACHE_VALID;
 
+                //记录当前视图的mLeft和mTop值，在下一次循环中会把当前值再向父容器的坐标转化
                 location[CHILD_LEFT_INDEX] = left;
                 location[CHILD_TOP_INDEX] = top;
 
@@ -5260,11 +5266,13 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
                     mPrivateFlags |= PFLAG_INVALIDATED;
                 }
 
+                //返回当前视图的父容器
                 return mParent;
 
             } else {
                 mPrivateFlags &= ~PFLAG_DRAWN & ~PFLAG_DRAWING_CACHE_VALID;
 
+                //记录当前视图的mLeft和mTop值，在下一次循环中会把当前值再向父容器的坐标转化
                 location[CHILD_LEFT_INDEX] = mLeft;
                 location[CHILD_TOP_INDEX] = mTop;
                 if ((mGroupFlags & FLAG_CLIP_CHILDREN) == FLAG_CLIP_CHILDREN) {
@@ -6109,6 +6117,7 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
         int specMode = MeasureSpec.getMode(spec);
         int specSize = MeasureSpec.getSize(spec);
 
+        //子View的最大可用空间: 父容器尺寸减去padding
         int size = Math.max(0, specSize - padding);
 
         int resultSize = 0;

@@ -2020,6 +2020,7 @@ public final class ViewRootImpl implements ViewParent,
                 if (focusChangedDueToTouchMode || mWidth != host.getMeasuredWidth()
                         || mHeight != host.getMeasuredHeight() || contentInsetsChanged ||
                         updatedConfiguration) {
+                    //通过window的长款和LayoutParams里的长度取出MeasureSpec
                     int childWidthMeasureSpec = getRootMeasureSpec(mWidth, lp.width);
                     int childHeightMeasureSpec = getRootMeasureSpec(mHeight, lp.height);
 
@@ -2612,6 +2613,7 @@ public final class ViewRootImpl implements ViewParent,
             return;
         }
 
+        //是否需要重新绘制全部视图
         final boolean fullRedrawNeeded = mFullRedrawNeeded;
         mFullRedrawNeeded = false;
 
@@ -2720,6 +2722,7 @@ public final class ViewRootImpl implements ViewParent,
 
         int resizeAlpha = 0;
 
+        //获取需要绘制的区域
         final Rect dirty = mDirty;
         if (mSurfaceHolder != null) {
             // The app owns the surface, we won't draw.
@@ -2730,6 +2733,8 @@ public final class ViewRootImpl implements ViewParent,
             return;
         }
 
+        //如果fullRedrawNeeded为真，则把dirty区域置为整个屏幕，表示整个视图都需要绘制
+        //第一次绘制流程，需要绘制所有视图
         if (fullRedrawNeeded) {
             mAttachInfo.mIgnoreDirtyState = true;
             dirty.set(0, 0, (int) (mWidth * appScale + 0.5f), (int) (mHeight * appScale + 0.5f));
@@ -2863,6 +2868,7 @@ public final class ViewRootImpl implements ViewParent,
             final int right = dirty.right;
             final int bottom = dirty.bottom;
 
+            //锁定canvas区域，由dirty区域决定
             canvas = mSurface.lockCanvas(dirty);
 
             // The dirty rectangle can be modified by Surface.lockCanvas()
@@ -2923,6 +2929,7 @@ public final class ViewRootImpl implements ViewParent,
                 canvas.setScreenDensity(scalingRequired ? mNoncompatDensity : 0);
                 attachInfo.mSetIgnoreDirtyState = false;
 
+                //正式的draw
                 mView.draw(canvas);
 
                 drawAccessibilityFocusedDrawableIfNeeded(canvas);

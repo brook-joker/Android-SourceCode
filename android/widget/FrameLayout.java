@@ -168,8 +168,10 @@ public class FrameLayout extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        //获取当前布局内的子View数量
         int count = getChildCount();
 
+        //判断当前布局的宽高是否是match_parent模式或者指定一个精确的大小，如果是则置measureMatchParent为false.
         final boolean measureMatchParentChildren =
                 MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.EXACTLY ||
                 MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.EXACTLY;
@@ -181,15 +183,20 @@ public class FrameLayout extends ViewGroup {
 
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
+            //遍历所有类型不为GONE的子View
             if (mMeasureAllChildren || child.getVisibility() != GONE) {
                 //测量子View
                 measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0);
                 final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+                //寻找子View中宽高的最大者，因为如果FrameLayout是wrap_content属性
+                //那么它的大小取决于子View中的最大者
                 maxWidth = Math.max(maxWidth,
                         child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin);
                 maxHeight = Math.max(maxHeight,
                         child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin);
                 childState = combineMeasuredStates(childState, child.getMeasuredState());
+                //如果FrameLayout是wrap_content模式，那么往mMatchParentChildren中添加
+                //宽或者高为match_parent的子View，因为该子View的最终测量大小会受到FrameLayout的最终测量大小影响
                 if (measureMatchParentChildren) {
                     if (lp.width == LayoutParams.MATCH_PARENT ||
                             lp.height == LayoutParams.MATCH_PARENT) {
@@ -214,11 +221,14 @@ public class FrameLayout extends ViewGroup {
             maxWidth = Math.max(maxWidth, drawable.getMinimumWidth());
         }
 
+        //保存测量结果
         setMeasuredDimension(resolveSizeAndState(maxWidth, widthMeasureSpec, childState),
                 resolveSizeAndState(maxHeight, heightMeasureSpec,
                         childState << MEASURED_HEIGHT_STATE_SHIFT));
 
+        //子View中设置为match_parent的个数
         count = mMatchParentChildren.size();
+        //只有FrameLayout的模式为wrap_content的时候才会执行下列语句
         if (count > 1) {
             for (int i = 0; i < count; i++) {
                 final View child = mMatchParentChildren.get(i);
