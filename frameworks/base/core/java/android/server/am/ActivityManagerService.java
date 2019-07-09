@@ -184,6 +184,7 @@ import static com.android.server.wm.AppTransition.TRANSIT_NONE;
 import static com.android.server.wm.AppTransition.TRANSIT_TASK_IN_PLACE;
 import static com.android.server.wm.AppTransition.TRANSIT_TASK_OPEN;
 import static com.android.server.wm.AppTransition.TRANSIT_TASK_TO_FRONT;
+import static frameworks.base.core.java.android.server.am.ActivityManagerDebugConfig.TAG_WITH_CLASS_NAME;
 import static org.xmlpull.v1.XmlPullParser.END_DOCUMENT;
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
 
